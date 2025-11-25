@@ -1,0 +1,15 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      target: prod
+    ports:
+      - ${DOCKER_FRONTEND_PORT:-5173}:5173
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - ${DOCKER_BACKEND_PORT:-8080}:8080
+    volumes:
+      - ./backend/pb_data:/pb/pb_data

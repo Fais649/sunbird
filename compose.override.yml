@@ -1,0 +1,10 @@
+services:
+  frontend:
+    user: "${DOCKER_FRONTEND_UID:-1000}:${DOCKER_FRONTEND_GID:-1000}"
+    build:
+      context: ./frontend
+      target: dev
+    volumes:
+      - ./frontend:/app
+    ports:
+      - ${DOCKER_FRONTEND_PORT:-5173}:5173
