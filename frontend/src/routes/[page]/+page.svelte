@@ -15,23 +15,19 @@
 	});
 </script>
 
-<div class="grid grid-cols-1 gap-4 max-w-lg">
-	<div class="flex flex-col w-full items-center gap-4 p-32">
-		<Button href="/event/create" variant="default" size="lg" class="p-8 flex  text-4xl rounded-xl"
+<div class="flex flex-col gap-4 max-w-lg">
+	<div class="flex w-full items-center justify-between gap-4">
+		<Button href="/event/create" variant="default" size="lg" class="flex text-xl rounded-xl"
 			>Create Event +</Button
 		>
+
+		<div class="flex">
+			<Select bind:value={perPage} />
+			<Pagination totalItems={data.totalItems} perPage={data.perPage} />
+		</div>
 	</div>
 
 	{#each data.items as event}
 		<EventCard {event} />
 	{/each}
-
-	<div class="flex">
-		<div class="flex-1">
-			<Select bind:value={perPage} />
-		</div>
-		<div class="flex-3 justify-center">
-			<Pagination totalItems={data.totalItems} perPage={data.perPage} />
-		</div>
-	</div>
 </div>

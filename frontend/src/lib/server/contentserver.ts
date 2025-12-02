@@ -14,14 +14,14 @@ const userData = client.collection('_superusers')
 const eventData = client.collection('events')
 
 
-export async function getEvent(id: string, server: boolean = false): Promise<EventData> {
+export async function getEvent(id: string, server: boolean = false, locationQuery: boolean = false): Promise<EventData> {
 	await authenticate()
 	let event = await eventData.getOne<EventData>(id, { fields: EVENT_DATA_FIELDS })
-	return hydrateEvent(event, server)
+	return hydrateEvent(event, server, locationQuery)
 }
 
 
-export async function getEventList(page: number, perPage: number) {
+export async function getEventList(page: number, perPage: number, locationQuery: boolean = false) {
 	await authenticate()
 	let events = await eventData.getList<EventData>(page, perPage, { fields: EVENT_DATA_FIELDS })
 	let items = []
@@ -32,12 +32,12 @@ export async function getEventList(page: number, perPage: number) {
 	return events
 }
 
-async function hydrateEvent(event: EventData, server: boolean = false) {
+async function hydrateEvent(event: EventData, server: boolean = false, locationQuery: boolean = false) {
 	let imageUrls = event.banners.map((filename) => (server ? buildInternalFileURL('events', event.id, filename, 'thumb=540x540') : buildPublicFileURL('events', event.id, filename, 'thumb=540x540')))
 	event.banners = imageUrls
 
 	event.locationUrl = buildPublicLocationUrl(event.location)
-	if (event.location.lat && event.location.lon) {
+	if (locationQuery && event.location.lat && event.location.lon) {
 		const url =
 			'https://nominatim.openstreetmap.org/reverse?' +
 			new URLSearchParams({
