@@ -51,7 +51,7 @@ END:VCALENDAR`.trim();
 	}
 </script>
 
-<Button size="lg" class="w-full text-xl" onclick={() => addToCalendar(event)}>
+<Button class="flex w-fit h-full text-lg" onclick={() => addToCalendar(event)}>
 	<CalendarIcon />
 	Add to Calendar
 </Button>

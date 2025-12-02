@@ -9,6 +9,8 @@
 	import * as Carousel from '$lib/components/ui/carousel/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Button from './ui/button/button.svelte';
+	import ButtonShare from './button-share.svelte';
+	import ButtonAddToCalendar from './button-add-to-calendar.svelte';
 
 	interface Props {
 		event: EventData;
@@ -113,7 +115,7 @@ END:VCALENDAR`.trim();
 {/snippet}
 
 <div class="flex w-full max-w-xl flex-col">
-	<Card.Root class="shadow-black shadow-xl">
+	<Card.Root class="shadow-black w-full shadow-xl">
 		<Card.Header>
 			{@render imageCarousel(event.banners)}
 		</Card.Header>
@@ -158,25 +160,9 @@ END:VCALENDAR`.trim();
 				</Item>
 			</Card.Description>
 		</Card.Content>
-		<Card.Footer>
-			<Button
-				size="icon-lg"
-				class="shadow-black shadow-lg"
-				variant="outline"
-				onclick={() => shareEvent(event)}
-			>
-				<ShareIcon />
-			</Button>
-			<div class="flex justify-end gap-2 shrink-0 flex-1">
-				<Button
-					size="lg"
-					class="shadow-black shadow-lg text-xl"
-					onclick={() => addToCalendar(event)}
-				>
-					<CalendarIcon />
-					Add to Calendar
-				</Button>
-			</div>
+		<Card.Footer class="w-full flex justify-between">
+			<ButtonShare {event} />
+			<ButtonAddToCalendar {event} />
 		</Card.Footer>
 	</Card.Root>
 </div>
