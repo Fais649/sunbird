@@ -12,10 +12,14 @@
 	<link rel="icon" href={logo} />
 </svelte:head>
 
-<div class="flex w-full sticky items-center justify-center py-8">
+<div class="flex p-8 w-full items-center justify-between">
 	<a href="/">
-		<img class="h-32 w-32" src={logo} alt="lol" />
+		<img class="h-16 w-16" src={logo} alt="lol" />
 	</a>
+	<div class="flex gap-8">
+		<a href="/about">About Us</a>
+		<a href="/partners">Our Partners</a>
+	</div>
 </div>
 
 <div class="w-full flex flex-col items-center py-8">
@@ -25,9 +29,5 @@
 </div>
 
 <div class="h-full w-full flex items-center py-16 justify-center gap-8">
-	<span>test</span>
-	<span>test</span>
-	<span>test</span>
-	<span>test</span>
-	<span>test</span>
+	<span>Sunbird GmbH</span>
 </div>
