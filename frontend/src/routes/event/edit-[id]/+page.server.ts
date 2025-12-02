@@ -5,7 +5,7 @@ import { formResponse, formValidate } from "../validator.js";
 
 export const load: PageServerLoad = async ({ params }) => {
 	const id = params.id
-	const event = await getEvent(id)
+	const event = await getEvent(id, false, true)
 	const form = await formValidate()
 	return { form, event }
 }
