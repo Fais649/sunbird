@@ -42,7 +42,7 @@ async function hydrateEvent(event: EventData, server: boolean = false, locationQ
 			'https://nominatim.openstreetmap.org/reverse?' +
 			new URLSearchParams({
 				lat: String(event.location.lat),
-				lon: String(event.location.lat),
+				lon: String(event.location.lon),
 				format: 'json',
 				limit: '1',
 				'accept-language': 'en'
