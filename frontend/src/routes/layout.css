@@ -5,7 +5,7 @@
 
 :root {
   --radius: 0rem;
-  --background: #fcfbf8;
+  --background: #e4e1dd;
   --foreground: oklch(0.141 0.005 285.823);
   --card: #fcfbf8;
 	--card-foreground: oklch(0.141 0.005 285.823);
@@ -15,7 +15,7 @@
   --primary-foreground: #F5F2E8;
   --secondary: #B24D4F;
   --secondary-foreground: #F5F2E8;
-  --muted: #F5F2E8;
+  --muted: #F5F2E8;#edebe8
   --muted-foreground: oklch(0.552 0.016 285.938);
   --accent: #F5F2E8;
   --accent-foreground: oklch(0.21 0.006 285.885);
@@ -94,6 +94,6 @@
 
   body {
     font-family: "Noto Serif", serif;
-    @apply bg-background text-foreground with-noise h-full flex items-center flex-col;
+    @apply bg-background text-foreground  h-full flex items-center flex-col;
   }
 }

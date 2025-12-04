@@ -26,17 +26,17 @@ export async function getEvent(id: string, server: boolean = false, locationQuer
 export async function getEventList(page: number, perPage: number) {
 	await authenticate()
 
-	let events = await eventData.getList<EventData>(page, perPage, { fields: EVENT_DATA_FIELDS, sort: 'start', filter: 'start > @now' })
+	let events = await eventData.getList<EventData>(page, perPage, { fields: EVENT_DATA_FIELDS, sort: 'start' })
 	let items = []
 	for (const event of events.items) {
-		items.push(await hydrateEvent(event))
+		items.push(await hydrateEvent(event, false))
 	}
 	events.items = items
 	return events
 }
 
 async function hydrateEvent(event: EventData, server: boolean = false, locationQuery: boolean = false) {
-	let imageUrls = event.banners.map((filename) => (server ? buildInternalFileURL('events', event.id, filename, 'thumb=540x540') : buildPublicFileURL('events', event.id, filename, 'thumb=540x540')))
+	let imageUrls = event.banners.map((filename) => (server ? buildInternalFileURL('events', event.id, filename, 'thumb=720x720f') : buildPublicFileURL('events', event.id, filename, 'thumb=540x540')))
 	event.banners = imageUrls
 
 	event.locationUrl = buildPublicLocationUrl(event.location)
@@ -128,11 +128,15 @@ async function authenticate() {
 	}
 }
 
-function buildPublicFileURL(collectionName: string, id: string, filename: string, properties?: string): string {
+export function buildPublicFileURL(collectionName: string, id: string, filename: string, properties?: string): string {
 	return publicURL + '/api/files/' + collectionName + '/' + id + '/' + filename + '?' + properties
 }
 
-function buildInternalFileURL(collectionName: string, id: string, filename: string, properties?: string): string {
+export function buildInternalFileURL(collectionName: string, id: string, filename: string, properties?: string): string {
+	return '/api/files/' + collectionName + '-' + id + '-' + filename + '-' + properties
+}
+
+export function buildInternalAPIUrl(collectionName: string, id: string, filename: string, properties?: string): string {
 	return internalURL + '/api/files/' + collectionName + '/' + id + '/' + filename + '?' + properties
 }
 

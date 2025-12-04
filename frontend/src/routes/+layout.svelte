@@ -15,7 +15,7 @@
 	<link rel="icon" href={logo} />
 </svelte:head>
 
-<div class="flex flex-col py-4 px-4 w-full h-128 gap-24 items-center justify-center with-noise">
+<div class="flex flex-col py-4 px-4 w-full h-128 gap-24 items-center justify-center">
 	<img class="aspect-square w-24 grayscale border rounded-full" src={logo} alt="lol" />
 
 	<div class="flex flex-col w-full max-w-xl gap-4 h-fit items-center justify-center">
@@ -38,7 +38,7 @@
 	</div>
 </div>
 
-<div class="w-full flex flex-col items-center py-8 with-noise">
+<div class="w-full flex flex-col items-center py-8">
 	<div class="flex w-full max-w-xl justify-center">
 		{@render children()}
 	</div>

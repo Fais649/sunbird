@@ -11,6 +11,7 @@
 	import ButtonAddToCalendar from './button-add-to-calendar.svelte';
 	import Separator from './ui/separator/separator.svelte';
 	import { ScrollArea } from './ui/scroll-area/index.ts';
+	import PaperImage from './paper-image.svelte';
 
 	interface Props {
 		event: EventData;
