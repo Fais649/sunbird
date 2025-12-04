@@ -16,7 +16,7 @@
 	});
 </script>
 
-<div class="flex flex-col h-full gap-16 max-w-lg with-noise items-center">
+<div class="flex px-4 flex-col h-full gap-16 max-w-lg with-noise items-center">
 	{#each data.items as event}
 		<div class="flex flex-col items-center">
 			<div class="w-full max-w-[50%] border-b flex justify-between text-xl italic">
