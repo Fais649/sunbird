@@ -2,6 +2,8 @@ import { env } from "$env/dynamic/private"
 import { env as publicEnv } from "$env/dynamic/public"
 import PocketBase, { ClientResponseError } from "pocketbase"
 import { EVENT_DATA_FIELDS, type CreateEventData, type EventData } from "./collections"
+import { form } from "$app/server"
+import { format } from "path"
 
 const authUsername = env.INTERNAL_API_AUTH_USERNAME ?? ''
 const authPassword = env.INTERNAL_API_AUTH_PASSWORD ?? ''
@@ -21,9 +23,10 @@ export async function getEvent(id: string, server: boolean = false, locationQuer
 }
 
 
-export async function getEventList(page: number, perPage: number, locationQuery: boolean = false) {
+export async function getEventList(page: number, perPage: number) {
 	await authenticate()
-	let events = await eventData.getList<EventData>(page, perPage, { fields: EVENT_DATA_FIELDS })
+
+	let events = await eventData.getList<EventData>(page, perPage, { fields: EVENT_DATA_FIELDS, sort: 'start', filter: 'start > @now' })
 	let items = []
 	for (const event of events.items) {
 		items.push(await hydrateEvent(event))

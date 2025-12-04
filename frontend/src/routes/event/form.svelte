@@ -43,17 +43,19 @@
 	enctype="multipart/form-data"
 	use:enhance
 	class="w-full gap-4 flex flex-col max-w-[95vw]"
+	data-slot="form"
 >
 	<Label class="text-4xl">Create an event</Label>
-	<div class="border rounded gap-2 flex flex-col w-full p-4 bg-card">
+	<div class="border rounded gap-2 flex flex-col w-full p-4 with-noise">
 		{#if data.event}
 			<input type="hidden" name="id" value={data.event.id} />
 		{/if}
+
 		<Form.ImagesField
 			{form}
 			name="banners"
 			title="Banners"
-			description="Upload some cool images to help your event stand out"
+			description="Cover photos for your event"
 		/>
 
 		<Form.TextField {form} name="title" title="Title" description="The title of your event" />

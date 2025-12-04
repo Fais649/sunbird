@@ -1,17 +1,16 @@
 <script lang="ts">
-	import ShareIcon from '@lucide/svelte/icons/share';
 	import LocationIcon from '@lucide/svelte/icons/map-pin';
 	import CalendarIcon from '@lucide/svelte/icons/calendar';
-	import ClockStartIcon from '@lucide/svelte/icons/clock-1';
 	import ClockEndIcon from '@lucide/svelte/icons/clock-7';
+	import EditIcon from '@lucide/svelte/icons/pencil';
 	import Item from '$lib/components/ui/item/item.svelte';
 	import type { EventData } from '$lib/server/collections';
 	import * as Carousel from '$lib/components/ui/carousel/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import Button from './ui/button/button.svelte';
 	import ButtonShare from './button-share.svelte';
 	import ButtonAddToCalendar from './button-add-to-calendar.svelte';
-	import LocationThumbnail from './location-thumbnail.svelte';
+	import Separator from './ui/separator/separator.svelte';
+	import { ScrollArea } from './ui/scroll-area/index.ts';
 
 	interface Props {
 		event: EventData;
@@ -20,78 +19,87 @@
 	let { event }: Props = $props();
 
 	function formatDate(date: string) {
-		return new Date(date).toLocaleString('de-DE', { dateStyle: 'short', timeStyle: 'short' });
+		return new Date(date).toLocaleString('de-DE', { dateStyle: 'short' });
+	}
+
+	function formatTime(date: string) {
+		return new Date(date).toLocaleString('de-DE', { timeStyle: 'short' });
 	}
 </script>
 
 {#snippet imageCarousel(imageUrls: string[])}
-	<Carousel.Root class=" flex items-center flex-col w-full border-none">
+	<Carousel.Root
+		class="flex items-center flex-col w-full h-104  border-none shadow-[0_4px_12px_0_rgba(0,0,0,0.25)]"
+	>
 		<Carousel.Content class="gap-0">
 			{#each imageUrls as imageUrl}
 				<Carousel.Item>
-					<img src={imageUrl} alt="banner" class="object-cover aspect-square h-full rounded" />
+					<img src={imageUrl} alt="banner" class="noisy object-cover aspect-square h-full" />
 				</Carousel.Item>
 			{/each}
 		</Carousel.Content>
 
-		<div class="gap-8 flex">
-			<Carousel.Previous class="shadow-black shadow-lg" />
-			<Carousel.Next class="shadow-black shadow-lg" />
-		</div>
+		{#if imageUrls.entries.length > 0}
+			<div class="gap-8 flex">
+				<Carousel.Previous class="shadow-black shadow-lg" />
+				<Carousel.Next class="shadow-black shadow-lg" />
+			</div>
+		{/if}
 	</Carousel.Root>
 {/snippet}
 
 <div class="flex w-full max-w-xl flex-col">
-	<Card.Root class="shadow-black w-full shadow-xl">
+	<Card.Root class="w-full shadow-[-6px_6px_0_0_rgba(0,0,0,0.12)]  gap-0 p-0">
 		<Card.Header>
 			{@render imageCarousel(event.banners)}
 		</Card.Header>
-		<Card.Content>
-			<div class="flex items-baseline justify-between">
-				<a href="/event/view-{event.id}">
-					<Card.Title class="underline text-4xl px-2">{event.title}</Card.Title>
-				</a>
-				<a href="/event/edit-{event.id}" class="underline">edit</a>
+		<Card.Content class="flex flex-col py-6 gap-4 px-6">
+			<div class="flex flex-col">
+				<div class="flex items-baseline justify-between pt-2">
+					<a href="/event/view-{event.id}">
+						<Card.Title class="hover:underline decoration-1 text-4xl">{event.title}</Card.Title>
+					</a>
+					<a href="/event/edit-{event.id}" class="">
+						<EditIcon strokeWidth="1" />
+					</a>
+				</div>
+
+				<div class="flex flex-col">
+					<ScrollArea class="italic h-24  pr-[5%] mr-[5%]" scrollbarYClasses="w-1">
+						<div class="py-4">
+							{@html event.description}
+						</div>
+					</ScrollArea>
+
+					<Separator class="with-noise" />
+				</div>
 			</div>
 
-			<Card.Description class="gap-4 flex flex-col text-xl">
-				<div class="px-2">
-					{@html event.description}
-				</div>
+			<div class="flex flex-col gap-2">
+				<Item class="flex items-center gap-1 ">
+					<LocationIcon strokeWidth="1" class="shrink-0" />
+					<a href={event.locationUrl} class="truncate hover:underline decoration-1 min-w-0 flex-1">
+						{event.locationUrl ?? 'nope'}
+					</a>
+				</Item>
 
-				<div>
-					<Button
-						variant="link"
-						href={event.locationUrl}
-						class="text-xl w-full"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<LocationIcon />
-						<span class="truncate">{event.locationUrl ?? 'nope'}</span>
-					</Button>
-				</div>
-
-				<Item class="px-2 py-0 flex  justify-between gap-2">
-					<span class="flex items-center gap-2">
-						<ClockStartIcon />
-						Start:
-					</span>
+				<Item class="flex  justify-start ">
+					<CalendarIcon strokeWidth="1" />
 					{formatDate(event.start)}
 				</Item>
 
-				<Item class="px-2 py-0 flex justify-between gap-2">
-					<div class="flex items-center gap-2">
-						<ClockEndIcon />
-						End:
-					</div>
-					{formatDate(event.end)}
+				<Item class="flex justify-start ">
+					<ClockEndIcon strokeWidth="1" />
+					{formatTime(event.start)}
+					->
+					{formatTime(event.end)}
 				</Item>
-			</Card.Description>
+
+				<div class="flex gap-2 pt-4">
+					<ButtonShare {event} />
+					<ButtonAddToCalendar {event} />
+				</div>
+			</div>
 		</Card.Content>
-		<Card.Footer class="w-full flex justify-between">
-			<ButtonShare {event} />
-			<ButtonAddToCalendar {event} />
-		</Card.Footer>
 	</Card.Root>
 </div>

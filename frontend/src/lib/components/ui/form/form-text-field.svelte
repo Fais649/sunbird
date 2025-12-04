@@ -24,10 +24,12 @@
 <Form.Field {form} {name}>
 	<Form.Control>
 		{#snippet children({ props })}
-			<Form.Label>{title}</Form.Label>
+			<div class="flex justify-between items-baseline">
+				<Form.Label>{title}</Form.Label>
+				<Form.Description>{description}</Form.Description>
+			</div>
 			<Input {...restProps} {...props} bind:value={$formData[name]} />
 		{/snippet}
 	</Form.Control>
 	<Form.FieldErrors />
-	<Form.Description>{description}</Form.Description>
 </Form.Field>

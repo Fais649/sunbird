@@ -48,7 +48,10 @@
 <Form.Field {form} {name} class="flex flex-col @container">
 	<Form.Control>
 		{#snippet children({ props })}
-			<Form.Label>{title}</Form.Label>
+			<div class="flex justify-between items-baseline">
+				<Form.Label>{title}</Form.Label>
+				<Form.Description>{description}</Form.Description>
+			</div>
 
 			<div class="grid grid-cols-2 gap-2">
 				<div class="columns-1">
@@ -56,21 +59,19 @@
 						<Popover.Trigger
 							{...props}
 							class={cn(
-								buttonVariants({ variant: 'outline' }),
-								'w-full justify-start ps-4 text-start font-normal',
-								!dateValue && 'text-muted-foreground'
+								buttonVariants({ variant: 'secondary' }),
+								'w-full justify-start ps-4 text-start font-normal '
 							)}
 						>
 							{dateValue ? df.format(dateValue.toDate(getLocalTimeZone())) : 'Pick a date'}
-							<CalendarIcon class="ms-auto size-4 opacity-50" />
+							<CalendarIcon strokeWidth="2" class="ms-auto size-4" />
 						</Popover.Trigger>
 						<Popover.Content class="w-full p-0" side="top">
 							<Calendar
 								type="single"
 								value={dateValue}
 								captionLayout="dropdown"
-								minValue={new CalendarDate(1900, 1, 1)}
-								maxValue={today(getLocalTimeZone())}
+								minValue={today(getLocalTimeZone())}
 								calendarLabel={title}
 								onValueChange={(v) => {
 									dateValue = v;
@@ -96,7 +97,6 @@
 				</div>
 			</div>
 			<Form.FieldErrors />
-			<Form.Description>{description}</Form.Description>
 
 			<input hidden name={props.name} value={$formData[name]} />
 		{/snippet}

@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import EventCard from '$lib/components/event-card.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import Pagination from './pagination.svelte';
 	import Select from './select.svelte';
 
@@ -15,19 +16,14 @@
 	});
 </script>
 
-<div class="flex flex-col gap-4 max-w-lg">
-	<div class="flex w-full items-center justify-between gap-4">
-		<Button href="/event/create" variant="default" size="lg" class="flex text-xl rounded-xl"
-			>Create Event +</Button
-		>
-
-		<div class="flex">
-			<Select bind:value={perPage} />
-			<Pagination totalItems={data.totalItems} perPage={data.perPage} />
-		</div>
-	</div>
-
+<div class="flex flex-col h-full gap-16 max-w-lg with-noise items-center">
 	{#each data.items as event}
-		<EventCard {event} />
+		<div class="flex flex-col items-center">
+			<div class="w-full max-w-[50%] border-b flex justify-between text-xl italic">
+				<span>today</span> <span>date</span>
+			</div>
+			<Separator orientation="vertical" class="min-h-52 max-h-52" />
+			<EventCard {event} />
+		</div>
 	{/each}
 </div>

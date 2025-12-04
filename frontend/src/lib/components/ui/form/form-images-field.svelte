@@ -40,10 +40,12 @@
 			{/each}
 		</Carousel.Content>
 
-		<div class="gap-8 flex">
-			<Carousel.Previous class="shadow-black shadow-lg" />
-			<Carousel.Next class="shadow-black shadow-lg" />
-		</div>
+		{#if imageUrls.length > 0}
+			<div class="gap-8 flex">
+				<Carousel.Previous class="shadow-black shadow-lg" />
+				<Carousel.Next class="shadow-black shadow-lg" />
+			</div>
+		{/if}
 	</Carousel.Root>
 {/snippet}
 
@@ -51,7 +53,13 @@
 	{@render imageCarousel($files)}
 	<Form.Control>
 		<div class="flex flex-col gap-4">
-			<Form.Label>{title}</Form.Label>
+			<div class="flex justify-between items-baseline">
+				<Form.Label>
+					{title}
+				</Form.Label>
+				<Form.Description>{description}</Form.Description>
+			</div>
+
 			<FileDropZone
 				{onUpload}
 				{onFileRejected}
@@ -62,7 +70,6 @@
 			/>
 
 			<Form.FieldErrors />
-			<Form.Description>{description}</Form.Description>
 			<div class="flex flex-col gap-2">
 				{#each Array.from($files) as file, i (file.name)}
 					<Button

@@ -122,7 +122,7 @@
 	for={id}
 	aria-disabled={!canUploadFiles}
 	class={cn(
-		'hover:bg-input/25 bg-input/30 border-input flex h-48 w-full place-items-center justify-center rounded-lg border-2  p-6 transition-all hover:cursor-pointer aria-disabled:opacity-50 aria-disabled:hover:cursor-not-allowed',
+		'hover:bg-muted  border-border border-dashed flex h-48 w-full place-items-center justify-center rounded-lg border  p-6 transition-all hover:cursor-pointer aria-disabled:opacity-50 aria-disabled:hover:cursor-not-allowed',
 		className
 	)}
 >

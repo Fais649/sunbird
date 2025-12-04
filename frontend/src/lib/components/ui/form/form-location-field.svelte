@@ -76,9 +76,12 @@
 	<Form.Field class="flex flex-col  w-full p-0" {form} {name}>
 		<Form.Control>
 			{#snippet children({ props })}
-				<Form.Label>{title}</Form.Label>
+				<div class="flex justify-between items-baseline">
+					<Form.Label>{title}</Form.Label>
+					<Form.Description>{description}</Form.Description>
+				</div>
 
-				<InputGroup.Root class="h-fit p-4">
+				<InputGroup.Root class="h-fit">
 					<InputGroup.Input
 						type="text"
 						placeholder="Search Address..."
@@ -127,9 +130,6 @@
 			{/if}
 			<Form.FieldErrors />
 		</Form.Description>
-		{#if !selected}
-			<Form.Description>{description}</Form.Description>
-		{/if}
 	</Form.Field>
 </Item.Root>
 
