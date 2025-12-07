@@ -63,7 +63,7 @@
 		{/if}
 		<div class="flex flex-col {horizontalLayout ? 'w-1/2  py-4' : 'w-full py-2'} h-full px-4">
 			<div class="flex flex-col h-1/2">
-				<div class="flex items-baseline justify-between pt-2">
+				<div class="flex items-baseline justify-between">
 					<a href="/event/view-{event.id}">
 						<div class="hover:underline decoration-1 text-3xl">{event.title}</div>
 					</a>
