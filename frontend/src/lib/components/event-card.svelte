@@ -52,17 +52,17 @@
 {/snippet}
 
 <svelte:window bind:innerWidth />
-<div class=" relative flex w-full gap-0 p-0 z-10">
+<div class=" relative flex w-full p-0 z-10">
 	<div
 		class="flex mb-4 border {horizontalLayout
 			? 'flex-row'
-			: 'flex-col'} bg-transparent w-full gap-0 p-0 z-10"
+			: 'flex-col'} bg-transparent w-full p-0 z-10"
 	>
 		{#if !horizontalLayout}
 			{@render imageCarousel(event.banners)}
 		{/if}
-		<div class="flex flex-col w-full h-full py-2 gap-4 px-4">
-			<div class="flex flex-col">
+		<div class="flex flex-col {horizontalLayout ? 'w-1/2  py-4' : 'w-full py-2'} h-full px-4">
+			<div class="flex flex-col h-1/2">
 				<div class="flex items-baseline justify-between pt-2">
 					<a href="/event/view-{event.id}">
 						<div class="hover:underline decoration-1 text-3xl">{event.title}</div>
@@ -76,37 +76,39 @@
 				</div>
 
 				<div class="flex flex-col">
-					<ScrollArea class="italic h-24  pr-[5%] mr-[5%]" scrollbarYClasses="w-1">
+					<ScrollArea class="italic h-28  pr-[5%] mr-[5%]" scrollbarYClasses="w-1">
 						<div class="py-4">
 							{@html event.description}
 						</div>
 					</ScrollArea>
-
-					<Separator />
 				</div>
 			</div>
 
-			<div class="flex flex-col gap-2">
-				<Item class="flex items-center gap-1 ">
-					<LocationIcon strokeWidth="1" class="shrink-0" />
-					<a href={event.locationUrl} class="truncate hover:underline decoration-1 min-w-0 flex-1">
-						{event.locationUrl ?? 'nope'}
-					</a>
-				</Item>
+			<div class="flex flex-col h-1/2 border-t justify-between pt-2">
+				<div class="flex flex-col h-3/4 pt-2 gap-1">
+					<Item class="flex items-center gap-1">
+						<LocationIcon strokeWidth="1" class="shrink-0" />
+						<a
+							href={event.locationUrl}
+							class="truncate hover:underline decoration-1 min-w-0 flex-1"
+						>
+							{event.locationUrl ?? 'nope'}
+						</a>
+					</Item>
 
-				<Item class="flex  justify-start ">
-					<CalendarIcon strokeWidth="1" />
-					{formatDate(event.start)}
-				</Item>
+					<Item class="flex  justify-start ">
+						<CalendarIcon strokeWidth="1" />
+						{formatDate(event.start)}
+					</Item>
 
-				<Item class="flex justify-start ">
-					<ClockEndIcon strokeWidth="1" />
-					{formatTime(event.start)}
-					->
-					{formatTime(event.end)}
-				</Item>
-
-				<div class="flex gap-2 pt-2">
+					<Item class="flex justify-start ">
+						<ClockEndIcon strokeWidth="1" />
+						{formatTime(event.start)}
+						->
+						{formatTime(event.end)}
+					</Item>
+				</div>
+				<div class="flex gap-2 pt-2 items-end {horizontalLayout ? '' : 'pb-2'}">
 					<ButtonShare {event} />
 					<ButtonAddToCalendar {event} />
 				</div>
