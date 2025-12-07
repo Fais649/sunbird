@@ -15,7 +15,9 @@
 		description,
 		children: childrenProp,
 		...restProps
-	}: { description: string } & FormPrimitive.FieldProps<T, U> &
+	}: {
+		description: string;
+	} & FormPrimitive.FieldProps<T, U> &
 		WithoutChildren<WithElementRef<HTMLAttributes<HTMLDivElement>>> = $props();
 
 	const { form: formData } = form;
@@ -24,11 +26,7 @@
 <Form.Field {form} {name}>
 	<Form.Control>
 		{#snippet children({ props })}
-			<div class="flex justify-between items-baseline">
-				<Form.Label>{title}</Form.Label>
-				<Form.Description>{description}</Form.Description>
-			</div>
-			<Input {...restProps} {...props} bind:value={$formData[name]} />
+			<Input {...props} {...restProps} bind:value={$formData[name]} placeholder={title} />
 		{/snippet}
 	</Form.Control>
 	<Form.FieldErrors />

@@ -4,10 +4,10 @@
 	import type { EventData } from '$lib/server/collections';
 	import { onMount } from 'svelte';
 	import { formSchema, type FormSchema } from './form-schema';
-	import SuperDebug from 'sveltekit-superforms';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 
 	import { zod4Client } from 'sveltekit-superforms/adapters';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 
 	let { data }: { data: { form: SuperValidated<Infer<FormSchema>>; event?: EventData } } = $props();
 
@@ -38,56 +38,95 @@
 	});
 </script>
 
-<form
-	method="POST"
-	enctype="multipart/form-data"
-	use:enhance
-	class="w-full gap-4 flex flex-col max-w-[95vw]"
-	data-slot="form"
->
-	<Label class="text-4xl">Create an event</Label>
-	<div class="border rounded gap-2 flex flex-col w-full p-4 with-noise">
-		{#if data.event}
-			<input type="hidden" name="id" value={data.event.id} />
-		{/if}
-
-		<Form.ImagesField
-			{form}
-			name="banners"
-			title="Banners"
-			description="Cover photos for your event"
-		/>
-
-		<Form.TextField {form} name="title" title="Title" description="The title of your event" />
-
-		<Form.TextField
-			{form}
-			name="description"
-			title="Description"
-			description="Details about the event"
-		/>
-
-		<Form.LocationField
-			{form}
-			name="location"
-			title="Location"
-			description="Where does it take place?"
-			defaultQuery={data.event?.location.query ?? ''}
-		/>
-
-		<Form.DateTimeField {form} name="start" title="Start Date" description="When does it start?" />
-		<Form.DateTimeField
-			{form}
-			name="end"
-			title="End Date"
-			description="When does it end?"
-			defaultTime="11:30:00"
-		/>
+<div class=" relative flex w-full gap-0 p-0">
+	<div
+		class="absolute border -left-2 -top-2 h-[calc(100%+var(--spacing)*4)] w-[calc(100%+var(--spacing)*4)] pointer-events-none z-0"
+	>
+		<div
+			class="halftone relative -left-2 -top-2 w-[calc(100%+var(--spacing)*4)] h-[calc(100%+var(--spacing)*4)]"
+		></div>
 	</div>
 
-	<div class="flex justify-center">
-		<Form.Button size="lg" class="text-4xl font-bold w-full p-4 h-full">Submit</Form.Button>
-	</div>
+	<form
+		method="POST"
+		enctype="multipart/form-data"
+		use:enhance
+		class="flex w-full flex-col border-none gap-0 p-0 z-10"
+		data-slot="form"
+	>
+		<div
+			class="flex w-full flex-col bg-background border-none [box-shadow:0_0_60px_10px_rgba(0,0,0,0.8)] gap-0 p-0 z-10"
+		>
+			<div class="gap-4 flex flex-col w-full p-4">
+				{#if data.event}
+					<input type="hidden" name="id" value={data.event.id} />
+				{/if}
 
-	<SuperDebug data={$formData} />
-</form>
+				<Form.ImagesField
+					{form}
+					name="banners"
+					title="Event Banners"
+					description="Cover photos for your event"
+				/>
+
+				<Form.TextField {form} name="title" title="Title" description="The title of your event" />
+
+				<Form.TextField
+					{form}
+					name="description"
+					title="Description"
+					description="Details about the event"
+				/>
+
+				<Form.LocationField
+					{form}
+					name="location"
+					title="Location"
+					description="Where does it take place?"
+					defaultQuery={data.event?.location.query ?? ''}
+				/>
+
+				<div class="flex flex-col gap-1">
+					<Form.DateTimeField
+						{form}
+						name="start"
+						title="Timings"
+						showTitle={false}
+						description="When does it take place?"
+					/>
+					<Form.DateTimeField
+						{form}
+						showTitle={false}
+						name="end"
+						title="End Date"
+						description="When does it end?"
+						defaultTime="11:30:00"
+					/>
+				</div>
+			</div>
+		</div>
+
+		<div class="flex justify-center z-100">
+			<Form.Button size="lg" class="text-3xl italic  w-full p-4 h-full">Submit</Form.Button>
+		</div>
+	</form>
+</div>
+
+<style>
+	.halftone {
+		background: url('$lib/assets/halftone.svg') repeat;
+		background-size: 100px auto;
+
+		-webkit-mask-image: radial-gradient(ellipse, transparent 50%, black 60%, transparent 97.5%);
+		mask-image: radial-gradient(ellipse, transparent 50%, black 60%, transparent 97.5%);
+
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+
+		-webkit-mask-position: center;
+		mask-position: center;
+
+		-webkit-mask-size: 100% 100%;
+		mask-size: 100% 100%;
+	}
+</style>

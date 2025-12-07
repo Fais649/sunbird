@@ -12,6 +12,7 @@
 	import Separator from './ui/separator/separator.svelte';
 	import { ScrollArea } from './ui/scroll-area/index.ts';
 	import PaperImage from './paper-image.svelte';
+	import Halftone from '$lib/assets/halftone.svg';
 
 	interface Props {
 		event: EventData;
@@ -29,9 +30,7 @@
 </script>
 
 {#snippet imageCarousel(imageUrls: string[])}
-	<Carousel.Root
-		class="flex items-center flex-col w-full h-104  border-none shadow-[0_4px_12px_0_rgba(0,0,0,0.25)]"
-	>
+	<Carousel.Root class="flex items-center flex-col w-full aspect-square  border-none">
 		<Carousel.Content class="gap-0">
 			{#each imageUrls as imageUrl}
 				<Carousel.Item>
@@ -49,8 +48,17 @@
 	</Carousel.Root>
 {/snippet}
 
-<div class="flex w-full max-w-xl flex-col">
-	<Card.Root class="w-full shadow-[-6px_6px_0_0_rgba(0,0,0,0.12)]  gap-0 p-0">
+<div class=" relative flex w-full gap-0 p-0">
+	<div
+		class="absolute border -left-2 -top-2 h-[calc(100%+var(--spacing)*4)] w-[calc(100%+var(--spacing)*4)] pointer-events-none z-0"
+	>
+		<div
+			class="halftone relative -left-2 -top-2 w-[calc(100%+var(--spacing)*4)] h-[calc(100%+var(--spacing)*4)]"
+		></div>
+	</div>
+	<Card.Root
+		class="flex w-full border-none  [box-shadow:0_0_60px_10px_rgba(0,0,0,0.8)]  gap-0 p-0 z-10"
+	>
 		<Card.Header>
 			{@render imageCarousel(event.banners)}
 		</Card.Header>
@@ -72,7 +80,7 @@
 						</div>
 					</ScrollArea>
 
-					<Separator class="with-noise" />
+					<Separator />
 				</div>
 			</div>
 
@@ -104,3 +112,22 @@
 		</Card.Content>
 	</Card.Root>
 </div>
+
+<style>
+	.halftone {
+		background: url('$lib/assets/halftone.svg') repeat;
+		background-size: 100px auto;
+
+		-webkit-mask-image: radial-gradient(ellipse, transparent 50%, black 60%, transparent 97.5%);
+		mask-image: radial-gradient(ellipse, transparent 50%, black 60%, transparent 97.5%);
+
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+
+		-webkit-mask-position: center;
+		mask-position: center;
+
+		-webkit-mask-size: 100% 100%;
+		mask-size: 100% 100%;
+	}
+</style>

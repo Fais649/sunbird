@@ -1,6 +1,6 @@
 import type { Reroute } from '@sveltejs/kit';
 const translated: Record<string, string> = {
-	'/': '/1',
+	'/': '/',
 };
 
 export const reroute: Reroute = ({ url }) => {

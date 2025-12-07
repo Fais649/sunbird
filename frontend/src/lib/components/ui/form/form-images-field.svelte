@@ -12,6 +12,7 @@
 	import { toast } from 'svelte-sonner';
 	import { filesProxy } from 'sveltekit-superforms';
 	import * as Carousel from '../carousel/index.ts';
+	import Separator from '../separator/separator.svelte';
 
 	let { form, name, title, description } = $props();
 	const files = filesProxy(form, name);
@@ -24,73 +25,87 @@
 	const onFileRejected: FileDropZoneProps['onFileRejected'] = async ({ reason, file }) => {
 		toast.error(`${file.name} failed to upload!`, { description: reason });
 	};
+
+	let activeImage: File | undefined = $state();
+
+	$effect(() => {
+		if ($files.length > 0 && !activeImage) {
+			activeImage = $files[0];
+		}
+	});
 </script>
 
 {#snippet imageCarousel(imageUrls: FileList)}
-	<Carousel.Root class=" flex items-center flex-col w-full border-none">
-		<Carousel.Content class="gap-0">
-			{#each imageUrls as imageUrl}
-				<Carousel.Item>
-					<img
-						src={URL.createObjectURL(imageUrl)}
-						alt="banner"
-						class="object-cover aspect-square h-full rounded"
-					/>
-				</Carousel.Item>
-			{/each}
-		</Carousel.Content>
+	<div class="flex items-center flex-col w-full border-none gap-2">
+		<div class="flex w-full aspect-square border p-1">
+			{#if activeImage}
+				<img
+					src={URL.createObjectURL(activeImage)}
+					alt="banner"
+					class="object-cover aspect-square h-full"
+				/>
+			{/if}
+		</div>
 
-		{#if imageUrls.length > 0}
-			<div class="gap-8 flex">
-				<Carousel.Previous class="shadow-black shadow-lg" />
-				<Carousel.Next class="shadow-black shadow-lg" />
-			</div>
-		{/if}
-	</Carousel.Root>
-{/snippet}
-
-<Form.Field {form} {name} class="flex flex-col">
-	{@render imageCarousel($files)}
-	<Form.Control>
-		<div class="flex flex-col gap-4">
-			<div class="flex justify-between items-baseline">
-				<Form.Label>
-					{title}
-				</Form.Label>
-				<Form.Description>{description}</Form.Description>
-			</div>
-
-			<FileDropZone
-				{onUpload}
-				{onFileRejected}
-				maxFileSize={10 * MEGABYTE}
-				accept="image/*"
-				maxFiles={4}
-				fileCount={$files.length ?? 0}
-			/>
-
-			<Form.FieldErrors />
-			<div class="flex flex-col gap-2">
-				{#each Array.from($files) as file, i (file.name)}
+		<div class="flex items-start w-full">
+			{#each imageUrls as imageUrl, i}
+				<div
+					class="flex flex-col w-24 {imageUrl.name == activeImage?.name
+						? 'border'
+						: 'border-foreground/50'}"
+				>
 					<Button
 						variant="ghost"
-						size="lg"
-						class="flex place-items-center gap-2 justify-between"
+						class="object-cover border border-transparent hover:border-foreground hover:bg-background h-full p-1 aspect-square"
+						onclick={() => {
+							activeImage = imageUrl;
+						}}
+					>
+						<img
+							src={URL.createObjectURL(imageUrl)}
+							alt="banner"
+							class="object-cover aspect-square h-full"
+						/>
+					</Button>
+
+					<Button
+						variant="ghost"
+						size="sm"
+						class="flex hover:text-primary-foreground hover:bg-primary place-items-center justify-between  p-1"
 						onclick={() => {
 							files.set([...Array.from($files).slice(0, i), ...Array.from($files).slice(i + 1)]);
 						}}
 					>
 						<div class="flex flex-col">
-							<span class="gap-4 flex">
-								<ImageIcon />
-								{file.name}</span
-							>
-							<span class="text-muted-foreground text-xs">{displaySize(file.size)}</span>
+							<span class="text-xs">{displaySize(imageUrl.size)}</span>
 						</div>
 						<XIcon />
 					</Button>
-				{/each}
-			</div>
+				</div>
+			{/each}
+		</div>
+	</div>
+{/snippet}
+
+<Form.Field {form} {name} class="flex flex-col">
+	<Form.Control>
+		<div class="flex flex-col gap-4">
+			{#if $files.length == 0}
+				<FileDropZone
+					{title}
+					{description}
+					{onUpload}
+					{onFileRejected}
+					maxFileSize={10 * MEGABYTE}
+					accept="image/*"
+					maxFiles={8}
+					fileCount={$files.length ?? 0}
+				/>
+			{:else}
+				{@render imageCarousel($files)}
+			{/if}
+
+			<Form.FieldErrors />
 			<input {name} type="file" bind:files={$files} class="hidden" />
 		</div>
 	</Form.Control>

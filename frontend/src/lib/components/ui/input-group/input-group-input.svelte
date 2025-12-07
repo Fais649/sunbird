@@ -11,4 +11,10 @@
 	}: ComponentProps<typeof Input> = $props();
 </script>
 
-<Input bind:ref data-slot="input-group-control" class={cn('', className)} bind:value {...props} />
+<Input
+	bind:ref
+	data-slot="input-group-control"
+	class={cn('aria-invalid:border-l-destructive', className)}
+	bind:value
+	{...props}
+/>

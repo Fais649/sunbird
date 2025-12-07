@@ -5,22 +5,22 @@
 
 :root {
   --radius: 0rem;
-  --background: #e4e1dd;
-  --foreground: oklch(0.141 0.005 285.823);
-  --card: #fcfbf8;
-	--card-foreground: oklch(0.141 0.005 285.823);
-  --popover: #F5F2E8;
-  --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: #518AB2;
-  --primary-foreground: #F5F2E8;
-  --secondary: #B24D4F;
-  --secondary-foreground: #F5F2E8;
-  --muted: #F5F2E8;#edebe8
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: #F5F2E8;
+  --background: oklch(0.141 0.005 285.823);
+  --foreground: #e4e1dd;
+  --card: oklch(0.141 0.005 285.823);
+	--card-foreground: #e4e1dd;
+  --popover: oklch(0.141 0.005 285.823);
+  --popover-foreground: #e4e1dd;
+  --primary: #B24D4F;
+  --primary-foreground: #e4e1dd;
+  --secondary: #518AB2;
+  --secondary-foreground: #e4e1dd;
+  --muted: var(--background);
+  --muted-foreground: #e4e1dd;
+  --accent: #e4e1dd;
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
-  --border:  #000;
+  --border:  #6C6A69;
 
   --input: oklch(0.92 0.004 286.32);
   --ring: oklch(0.645 0.246 16.439);
@@ -94,6 +94,7 @@
 
   body {
     font-family: "Noto Serif", serif;
+		font-weight: 200;
     @apply bg-background text-foreground  h-full flex items-center flex-col;
   }
 }

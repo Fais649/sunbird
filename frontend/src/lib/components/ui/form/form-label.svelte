@@ -16,7 +16,7 @@
 		<Label
 			{...props}
 			data-slot="form-label"
-			class={cn('data-[fs-error]:text-destructive text-2xl font-bold', className)}
+			class={cn('data-[fs-error]:text-destructive text-xl', className)}
 		>
 			{@render children?.()}
 		</Label>

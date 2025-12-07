@@ -1,7 +1,7 @@
 import { env } from "$env/dynamic/private"
 import { env as publicEnv } from "$env/dynamic/public"
 import PocketBase, { ClientResponseError } from "pocketbase"
-import { EVENT_DATA_FIELDS, type CreateEventData, type EventData } from "./collections"
+import { DATE_DATA_FIELDS, EVENT_DATA_FIELDS, type CreateEventData, type DateData, type EventData } from "./collections"
 import { form } from "$app/server"
 import { format } from "path"
 
@@ -14,6 +14,7 @@ const internalURL = env.INTERNAL_API_URL ?? ''
 const client = new PocketBase(env.INTERNAL_API_URL ?? '')
 const userData = client.collection('_superusers')
 const eventData = client.collection('events')
+const dateData = client.collection('dates')
 
 
 export async function getEvent(id: string, server: boolean = false, locationQuery: boolean = false): Promise<EventData> {
@@ -25,14 +26,21 @@ export async function getEvent(id: string, server: boolean = false, locationQuer
 
 export async function getEventList(page: number, perPage: number) {
 	await authenticate()
+	let res = await dateData.getFullList<DateData>({ fields: DATE_DATA_FIELDS })
 
-	let events = await eventData.getList<EventData>(page, perPage, { fields: EVENT_DATA_FIELDS, sort: 'start' })
-	let items = []
-	for (const event of events.items) {
-		items.push(await hydrateEvent(event, false))
+	let dates = []
+	for (const date of res) {
+		let events = []
+		for (const event of date.events) {
+			events.push(await hydrateEvent(event, false))
+		}
+
+		date.events = events
+		dates.push(date)
 	}
-	events.items = items
-	return events
+
+	console.log(dates)
+	return dates
 }
 
 async function hydrateEvent(event: EventData, server: boolean = false, locationQuery: boolean = false) {

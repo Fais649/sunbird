@@ -12,12 +12,14 @@
 		maxFileSize,
 		fileCount,
 		disabled = false,
+		title,
+		description,
 		onUpload,
 		onFileRejected,
 		accept,
 		class: className,
 		...rest
-	}: FileDropZoneProps = $props();
+	}: FileDropZoneProps & { description: string } = $props();
 
 	if (maxFiles !== undefined && fileCount === undefined) {
 		console.warn(
@@ -122,25 +124,31 @@
 	for={id}
 	aria-disabled={!canUploadFiles}
 	class={cn(
-		'hover:bg-muted  border-border border-dashed flex h-48 w-full place-items-center justify-center rounded-lg border  p-6 transition-all hover:cursor-pointer aria-disabled:opacity-50 aria-disabled:hover:cursor-not-allowed',
+		'hover:bg-muted  aspect-square border-border  flex  w-full place-items-center justify-center rounded-lg border  p-6 transition-all hover:cursor-pointer aria-disabled:opacity-50 aria-disabled:hover:cursor-not-allowed',
 		className
 	)}
 >
 	{#if children}
 		{@render children()}
 	{:else}
-		<div class="flex flex-col place-items-center justify-center gap-2">
+		<div class="flex aspect- flex-col place-items-center justify-center gap-4">
+			<span class="text-foreground italic text-3xl">
+				{title}
+			</span>
+			<span class="text-foreground italic">
+				{description}
+			</span>
 			<div
 				class="border-border text-muted-foreground flex size-18 place-items-center justify-center rounded-full border"
 			>
 				<UploadIcon class="size-7" />
 			</div>
 			<div class="flex flex-col gap-0.5 text-center">
-				<span class="text-muted-foreground font-medium text-xl">
+				<span class="text-foreground/50 italic text-sm">
 					Drag files here, or click to select files
 				</span>
 				{#if maxFiles || maxFileSize}
-					<span class="text-muted-foreground/75 text-lg gap-2 flex justify-center">
+					<span class="text-foreground/50 gap-2 flex text-sm justify-center">
 						{#if maxFiles}
 							<span>(max. {maxFiles} files)</span>
 						{/if}

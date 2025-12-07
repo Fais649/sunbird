@@ -16,7 +16,7 @@
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 
-	let { form, name, title, description, defaultTime = '10:30:00' } = $props();
+	let { form, name, title, description, defaultTime = '10:30:00', showTitle = true } = $props();
 	const { form: formData } = form;
 
 	const df = new DateFormatter('en-US', { dateStyle: 'long' });
@@ -45,22 +45,24 @@
 	});
 </script>
 
-<Form.Field {form} {name} class="flex flex-col @container">
+<Form.Field {form} {name} class="flex flex-col">
 	<Form.Control>
 		{#snippet children({ props })}
-			<div class="flex justify-between items-baseline">
-				<Form.Label>{title}</Form.Label>
-				<Form.Description>{description}</Form.Description>
-			</div>
+			{#if showTitle}
+				<div class="flex justify-between w-full items-baseline mb-2">
+					<Form.Label>{title}</Form.Label>
+					<Form.Description>{description}</Form.Description>
+				</div>
+			{/if}
 
-			<div class="grid grid-cols-2 gap-2">
-				<div class="columns-1">
+			<div class="flex not-lg:flex-col h-full items-center w-full">
+				<div class="flex w-full">
 					<Popover.Root>
 						<Popover.Trigger
 							{...props}
 							class={cn(
-								buttonVariants({ variant: 'secondary' }),
-								'w-full justify-start ps-4 text-start font-normal '
+								buttonVariants({ variant: 'outline' }),
+								'flex w-full justify-start border-0 border-l text-start h-full p-2'
 							)}
 						>
 							{dateValue ? df.format(dateValue.toDate(getLocalTimeZone())) : 'Pick a date'}
@@ -81,15 +83,15 @@
 					</Popover.Root>
 				</div>
 
-				<div>
-					<div class="flex flex-col gap-3">
+				<div class="flex w-full">
+					<div class="flex flex-col">
 						<Label for="{name}-time" class="hidden px-1">Time</Label>
 						<Input
 							type="time"
 							id="{name}-time"
 							step="1"
 							bind:value={timeValue}
-							class="bg-background appearance-none 
+							class="bg-background mb-0 appearance-none 
            [&::-webkit-calendar-picker-indicator]:hidden 
            [&::-webkit-calendar-picker-indicator]:appearance-none"
 						/>

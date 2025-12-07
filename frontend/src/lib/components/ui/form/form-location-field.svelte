@@ -1,6 +1,8 @@
 <script lang="ts">
 	import * as InputGroup from '$lib/components/ui/input-group/index';
 	import * as Item from '$lib/components/ui/item/index.js';
+	import XIcon from '@lucide/svelte/icons/x';
+	import Button from '../button/button.svelte';
 	import * as Form from './index.js';
 	import PinIcon from '@lucide/svelte/icons/pin';
 	import { MapLibre, NavigationControl, ScaleControl, GlobeControl } from 'svelte-maplibre-gl';
@@ -76,18 +78,28 @@
 	<Form.Field class="flex flex-col  w-full p-0" {form} {name}>
 		<Form.Control>
 			{#snippet children({ props })}
-				<div class="flex justify-between items-baseline">
-					<Form.Label>{title}</Form.Label>
-					<Form.Description>{description}</Form.Description>
-				</div>
-
-				<InputGroup.Root class="h-fit">
+				<InputGroup.Root class="h-fit w-full">
 					<InputGroup.Input
+						name="location"
 						type="text"
-						placeholder="Search Address..."
+						placeholder={title}
+						class="border-0 aria-invalid:border-l-destructive"
 						bind:value={query}
 						oninput={onInput}
 					/>
+					{#if query}
+						<InputGroup.Button
+							variant="ghost"
+							size="icon-sm"
+							onclick={() => {
+								query = '';
+								selected = null;
+								results = [];
+								$formData[name] = { lat: 0.0, lon: 0.0 };
+							}}
+							class="hover:bg-primary hover:text-primary-foreground"><XIcon /></InputGroup.Button
+						>
+					{/if}
 				</InputGroup.Root>
 
 				{#if selected}
@@ -107,21 +119,20 @@
 		</Form.Control>
 		<Form.Description>
 			{#if results.length}
-				<Item.Root variant="muted">
+				<Item.Root variant="outline" class="border-r-0 border-t-0 border-b-0 pr-0">
 					<Item.Group class="gap-4 p-4">
 						{#each results as r}
-							<Item.Root>
+							<Item.Root class="w-full">
 								{#snippet child()}
-									<button onclick={() => choose(r)}>
-										<div class="flex w-full gap-4">
-											<Item.Media>
-												<PinIcon class="size-8" />
-											</Item.Media>
-											<Item.Content>
-												<Item.Title>{r.display_name}</Item.Title>
-											</Item.Content>
-										</div>
-									</button>
+									<Button
+										variant="outline"
+										class="whitespace-normal text-start p-4 h-full border-l  border-r-0 border-t-0 border-b-0 w-full truncate"
+										onclick={() => choose(r)}
+									>
+										<Item.Content>
+											<Item.Title>{r.display_name}</Item.Title>
+										</Item.Content>
+									</Button>
 								{/snippet}
 							</Item.Root>
 						{/each}
@@ -140,7 +151,6 @@
 		margin: 0;
 		padding: 0;
 		list-style: none;
-		border: 1px solid #ddd;
 	}
 	button {
 		padding: 6px 10px;
