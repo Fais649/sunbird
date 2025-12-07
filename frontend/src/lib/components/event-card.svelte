@@ -6,13 +6,10 @@
 	import Item from '$lib/components/ui/item/item.svelte';
 	import type { EventData } from '$lib/server/collections';
 	import * as Carousel from '$lib/components/ui/carousel/index.js';
-	import * as Card from '$lib/components/ui/card/index.js';
 	import ButtonShare from './button-share.svelte';
 	import ButtonAddToCalendar from './button-add-to-calendar.svelte';
 	import Separator from './ui/separator/separator.svelte';
 	import { ScrollArea } from './ui/scroll-area/index.ts';
-	import PaperImage from './paper-image.svelte';
-	import Halftone from '$lib/assets/halftone.svg';
 
 	interface Props {
 		event: EventData;
@@ -27,14 +24,20 @@
 	function formatTime(date: string) {
 		return new Date(date).toLocaleString('de-DE', { timeStyle: 'short' });
 	}
+	let innerWidth = $state(null);
+	let horizontalLayout = $derived((innerWidth ?? 0) > 768);
 </script>
 
 {#snippet imageCarousel(imageUrls: string[])}
-	<Carousel.Root class="flex items-center flex-col w-full aspect-3/2 overflow-hidden border-none">
+	<Carousel.Root
+		class={horizontalLayout
+			? 'w-1/2 h-full aspect-square overflow-hidden'
+			: 'w-full h-full aspect-3/2 overflow-hidden'}
+	>
 		<Carousel.Content class="gap-0">
 			{#each imageUrls as imageUrl}
 				<Carousel.Item>
-					<img src={imageUrl} alt="banner" class="object-cover h-full" />
+					<img src={imageUrl} alt="banner" class="object-cover w-full h-full" />
 				</Carousel.Item>
 			{/each}
 		</Carousel.Content>
@@ -48,28 +51,27 @@
 	</Carousel.Root>
 {/snippet}
 
+<svelte:window bind:innerWidth />
 <div class=" relative flex w-full gap-0 p-0 z-10">
 	<div
-		class="absolute border -left-2 -top-2 h-[calc(100%+var(--spacing)*4)] w-[calc(100%+var(--spacing)*4)] pointer-events-none z-0"
+		class="flex mb-4 border {horizontalLayout
+			? 'flex-row'
+			: 'flex-col'} bg-transparent w-full gap-0 p-0 z-10"
 	>
-		<div
-			class="halftone relative -left-2 -top-2 w-[calc(100%+var(--spacing)*4)] h-[calc(100%+var(--spacing)*4)]"
-		></div>
-	</div>
-	<Card.Root
-		class="flex w-full border-none  [box-shadow:0_0_60px_10px_rgba(0,0,0,0.8)]  gap-0 p-0 z-10"
-	>
-		<Card.Header>
+		{#if !horizontalLayout}
 			{@render imageCarousel(event.banners)}
-		</Card.Header>
-		<Card.Content class="flex flex-col py-6 gap-4 px-6">
+		{/if}
+		<div class="flex flex-col w-full h-full py-2 gap-4 px-4">
 			<div class="flex flex-col">
 				<div class="flex items-baseline justify-between pt-2">
 					<a href="/event/view-{event.id}">
-						<Card.Title class="hover:underline decoration-1 text-4xl">{event.title}</Card.Title>
+						<div class="hover:underline decoration-1 text-3xl">{event.title}</div>
 					</a>
-					<a href="/event/edit-{event.id}" class="">
-						<EditIcon strokeWidth="1" />
+					<a
+						href="/event/edit-{event.id}"
+						class="border rounded-full aspect-square p-2 h-full flex items-center justify-center"
+					>
+						<EditIcon strokeWidth="1" class="size-4" />
 					</a>
 				</div>
 
@@ -104,30 +106,14 @@
 					{formatTime(event.end)}
 				</Item>
 
-				<div class="flex gap-2 pt-4">
+				<div class="flex gap-2 pt-2">
 					<ButtonShare {event} />
 					<ButtonAddToCalendar {event} />
 				</div>
 			</div>
-		</Card.Content>
-	</Card.Root>
+		</div>
+		{#if horizontalLayout}
+			{@render imageCarousel(event.banners)}
+		{/if}
+	</div>
 </div>
-
-<style>
-	.halftone {
-		background: url('$lib/assets/halftone.svg') repeat;
-		background-size: 100px auto;
-
-		-webkit-mask-image: radial-gradient(ellipse, transparent 50%, black 60%, transparent 97.5%);
-		mask-image: radial-gradient(ellipse, transparent 50%, black 60%, transparent 97.5%);
-
-		-webkit-mask-repeat: no-repeat;
-		mask-repeat: no-repeat;
-
-		-webkit-mask-position: center;
-		mask-position: center;
-
-		-webkit-mask-size: 100% 100%;
-		mask-size: 100% 100%;
-	}
-</style>

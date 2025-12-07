@@ -51,6 +51,6 @@ END:VCALENDAR`.trim();
 	}
 </script>
 
-<Button size="icon-lg" onclick={() => addToCalendar(event)}>
+<Button size="icon-sm" class="rounded-full" onclick={() => addToCalendar(event)}>
 	<CalendarIcon strokeWidth="2" />
 </Button>

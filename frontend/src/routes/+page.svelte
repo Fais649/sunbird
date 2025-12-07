@@ -10,6 +10,7 @@
 	import Select from './select.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Label from '$lib/components/ui/label/label.svelte';
+	import Search from '@lucide/svelte/icons/search';
 
 	let { data } = $props();
 	let perPage: string = $state('10');
@@ -43,23 +44,25 @@
 </script>
 
 {#snippet searchField()}
-	<Input class="text-start w-1/2 border-0  h-full  focus:border-0 italic" placeholder="Search..." />
+	<div class="flex justify-center h-fit items-center">
+		<div class="rounded-full aspect-square h-full p-2 w-full border">
+			<Search strokeWidth="1" class="size-4" />
+		</div>
+	</div>
 {/snippet}
 
 {#snippet tabTriggers()}
-	<Tabs.List class="flex w-1/2  h-full  justify-center items-baseline">
-		<Tabs.Trigger value="past" class="w-full px-1  flex h-full">Past</Tabs.Trigger>
+	<Tabs.List class="flex  h-full w-full items-center">
+		<Tabs.Trigger value="past" class="w-full px-4 border-r  flex h-fit">Past</Tabs.Trigger>
 
-		<Tabs.Trigger value="upcoming" class="w-full px-1 flex">Upcoming</Tabs.Trigger>
+		<Tabs.Trigger value="upcoming" class="w-full px-4  flex h-fit">Upcoming</Tabs.Trigger>
 	</Tabs.List>
 {/snippet}
 
 {#snippet tabs()}
-	<div class="flex flex-col w-full">
-		<div class="flex w-full gap-1 border-t items-baseline justify-between">
-			{@render searchField()}
-			{@render tabTriggers()}
-		</div>
+	<div class="flex w-fit h-full items-center justify-end">
+		{@render tabTriggers()}
+		{@render searchField()}
 	</div>
 {/snippet}
 
@@ -72,24 +75,23 @@
 {/snippet}
 
 {#snippet dateHeader(date: string)}
-	<div class="flex-col w-fit border-b border-t border-l p-3 flex justify-between text-xl italic">
-		<span>{relativeDateString(date)}</span>
-		<span>{toLocaleDateString(date)}</span>
+	<div class="flex-col w-fit pb-4 px-0 flex items-start text-xl italic">
+		<span class="border-l pl-2 pt-2">{relativeDateString(date)}</span>
+		<span class="border-l pl-2 pb-2">{toLocaleDateString(date)}</span>
 	</div>
 {/snippet}
 
 {#snippet dateContent(date: DateData)}
-	<div class="flex flex-col items-start font-thin py-4">
+	<div class="flex flex-col items-start font-thin">
 		{@render dateHeader(date.date)}
 		{#each date.events as event}
-			<Separator orientation="vertical" class="min-h-16 max-h-16" />
 			<EventCard {event} />
 		{/each}
 	</div>
 {/snippet}
 
 {#snippet dateTab(key: string, data: DateData[])}
-	<Tabs.Content value={key} class="w-full py-0">
+	<Tabs.Content value={key} class="w-full py-0   border-t">
 		{#if data.length == 0}
 			{@render noEventsBox(key)}
 		{/if}
@@ -100,8 +102,11 @@
 {/snippet}
 
 <Tabs.Root value="upcoming" class="flex  w-full flex-col items-center justify-baseline-last">
-	<Label class="w-full text-4xl pt-12">Events</Label>
-	{@render tabs()}
+	<Label class="w-full text-3xl flex justify-between  pt-4">
+		<div>Events</div>
+		{@render tabs()}
+	</Label>
+
 	{@render dateTab('past', past)}
 	{@render dateTab('upcoming', upcoming)}
 </Tabs.Root>

@@ -6,6 +6,6 @@
 </script>
 
 <div class="flex flex-col w-full">
-	<Label class="w-full text-4xl pt-12 pb-4 border-b">New Event</Label>
+	<Label class="w-full text-3xl  pb-4 border-b">New Event</Label>
 	<Form {data} />
 </div>
