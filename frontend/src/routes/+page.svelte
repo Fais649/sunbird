@@ -44,13 +44,13 @@
 
 {#snippet searchField()}
 	<Input
-		class="text-start w-full  border-solid border  border-r-0 border-t-0 focus:border-0 italic"
+		class="text-start w-full  h-full border-solid border  border-r-0 border-t-0 focus:border-0 italic"
 		placeholder="Search..."
 	/>
 {/snippet}
 
 {#snippet tabTriggers()}
-	<Tabs.List class="flex w-fit   border-l  justify-center items-baseline">
+	<Tabs.List class="flex w-fit h-full border-l  justify-center items-baseline">
 		<Tabs.Trigger value="past" class="w-fit px-4 flex  data-[state=active]:border-b"
 			>Past</Tabs.Trigger
 		>
@@ -64,7 +64,7 @@
 {#snippet tabs()}
 	<div class="flex flex-col w-full">
 		<Label class="italic w-full text-xl border-b py-4">Events</Label>
-		<div class="flex w-full items-baseline justify-between">
+		<div class="flex w-full items-center justify-between">
 			{@render searchField()}
 			{@render tabTriggers()}
 		</div>

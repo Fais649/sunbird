@@ -5,6 +5,17 @@
 
 :root {
   --radius: 0rem;
+	--spacing: 0.35rem;
+  --text-xs: 0.8rem;
+  --text-sm: 1rem;
+  --text-md: 1.2rem;
+  --text-lg: 1.4rem;
+  --text-xl: 1.6rem;
+  --text-2xl: 1.8rem;
+  --text-3xl: 2rem;
+	--font-weight-medium: 200;
+	--font-weight-bold: 300;
+	--font-weight-light: 100;
   --background: oklch(0.141 0.005 285.823);
   --foreground: #e4e1dd;
   --card: oklch(0.141 0.005 285.823);

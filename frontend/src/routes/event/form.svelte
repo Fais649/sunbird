@@ -107,7 +107,7 @@
 		</div>
 
 		<div class="flex justify-center z-100">
-			<Form.Button size="lg" class="text-3xl italic  w-full p-4 h-full">Submit</Form.Button>
+			<Form.Button size="lg" class="text-xl italic  w-full p-4 h-full">Submit</Form.Button>
 		</div>
 	</form>
 </div>

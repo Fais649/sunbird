@@ -30,11 +30,11 @@
 </script>
 
 {#snippet imageCarousel(imageUrls: string[])}
-	<Carousel.Root class="flex items-center flex-col w-full aspect-square  border-none">
+	<Carousel.Root class="flex items-center flex-col w-full aspect-3/2 overflow-hidden border-none">
 		<Carousel.Content class="gap-0">
 			{#each imageUrls as imageUrl}
 				<Carousel.Item>
-					<img src={imageUrl} alt="banner" class="noisy object-cover aspect-square h-full" />
+					<img src={imageUrl} alt="banner" class="object-cover h-full" />
 				</Carousel.Item>
 			{/each}
 		</Carousel.Content>

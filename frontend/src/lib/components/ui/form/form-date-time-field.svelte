@@ -55,7 +55,7 @@
 				</div>
 			{/if}
 
-			<div class="flex not-lg:flex-col h-full items-center w-full">
+			<div class="flex flex-col lg:flex-row h-full items-center w-full">
 				<div class="flex w-full">
 					<Popover.Root>
 						<Popover.Trigger

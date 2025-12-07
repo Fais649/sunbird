@@ -132,7 +132,7 @@
 		{@render children()}
 	{:else}
 		<div class="flex aspect- flex-col place-items-center justify-center gap-4">
-			<span class="text-foreground italic text-3xl">
+			<span class="text-foreground italic text-xl">
 				{title}
 			</span>
 			<span class="text-foreground italic">
