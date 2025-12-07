@@ -45,7 +45,7 @@
 	});
 </script>
 
-<Form.Field {form} {name} class="flex flex-col">
+<Form.Field {form} {name} class="flex flex-col ">
 	<Form.Control>
 		{#snippet children({ props })}
 			{#if showTitle}
@@ -55,14 +55,14 @@
 				</div>
 			{/if}
 
-			<div class="flex flex-col lg:flex-row h-full items-center w-full">
+			<div class="flex flex-col lg:flex-row h-full items-center w-full gap-2">
 				<div class="flex w-full">
 					<Popover.Root>
 						<Popover.Trigger
 							{...props}
 							class={cn(
 								buttonVariants({ variant: 'outline' }),
-								'flex w-full justify-start border-0 border-l text-start h-full p-2'
+								'flex w-full justify-start border-0 border-l border-t  text-start '
 							)}
 						>
 							{dateValue ? df.format(dateValue.toDate(getLocalTimeZone())) : 'Pick a date'}
@@ -84,14 +84,14 @@
 				</div>
 
 				<div class="flex w-full">
-					<div class="flex flex-col">
+					<div class="flex flex-col w-full">
 						<Label for="{name}-time" class="hidden px-1">Time</Label>
 						<Input
 							type="time"
 							id="{name}-time"
 							step="1"
 							bind:value={timeValue}
-							class="bg-background mb-0 appearance-none 
+							class="bg-background appearance-none border-l-0 w-full
            [&::-webkit-calendar-picker-indicator]:hidden 
            [&::-webkit-calendar-picker-indicator]:appearance-none"
 						/>

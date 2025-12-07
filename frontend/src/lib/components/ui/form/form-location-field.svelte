@@ -78,12 +78,12 @@
 	<Form.Field class="flex flex-col  w-full p-0" {form} {name}>
 		<Form.Control>
 			{#snippet children({ props })}
-				<InputGroup.Root class="h-fit w-full">
+				<InputGroup.Root class="h-fit border-0 w-full">
 					<InputGroup.Input
 						name="location"
 						type="text"
 						placeholder={title}
-						class="border-0 aria-invalid:border-l-destructive"
+						class="border-l border-t aria-invalid:border-t-destructive aria-invalid:border-l-destructive"
 						bind:value={query}
 						oninput={onInput}
 					/>

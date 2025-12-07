@@ -55,7 +55,6 @@
 		</div>
 	</div>
 
-	<Separator />
 	<div class="w-full h-full flex flex-col flex-1 items-center z-10">
 		<div class="flex w-full h-full justify-center mb-32">
 			{@render children()}

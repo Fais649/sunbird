@@ -22,8 +22,8 @@
 	});
 </script>
 
-<div class="flex gap-4">
-	<div class="flex flex-col gap-3">
+<div class="flex gap-4 border h-full">
+	<div class="flex flex-col gap-3 border">
 		<Label for="{id}-date" class="px-1">Date</Label>
 		<Popover.Root bind:open>
 			<Popover.Trigger id="{id}-date">

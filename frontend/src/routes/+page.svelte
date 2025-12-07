@@ -44,27 +44,22 @@
 
 {#snippet searchField()}
 	<Input
-		class="text-start w-full  h-full border-solid border  border-r-0 border-t-0 focus:border-0 italic"
+		class="text-start w-full border-0  h-full  focus:border-0 italic"
 		placeholder="Search..."
 	/>
 {/snippet}
 
 {#snippet tabTriggers()}
-	<Tabs.List class="flex w-fit h-full border-l  justify-center items-baseline">
-		<Tabs.Trigger value="past" class="w-fit px-4 flex  data-[state=active]:border-b"
-			>Past</Tabs.Trigger
-		>
+	<Tabs.List class="flex w-full border-l h-full justify-center items-baseline">
+		<Tabs.Trigger value="past" class="w-full px-4  flex h-full">Past</Tabs.Trigger>
 
-		<Tabs.Trigger value="upcoming" class="w-fit px-4 flex data-[state=active]:border-b"
-			>Upcoming</Tabs.Trigger
-		>
+		<Tabs.Trigger value="upcoming" class="w-full px-4 flex">Upcoming</Tabs.Trigger>
 	</Tabs.List>
 {/snippet}
 
 {#snippet tabs()}
 	<div class="flex flex-col w-full">
-		<Label class="italic w-full text-xl border-b py-4">Events</Label>
-		<div class="flex w-full items-center justify-between">
+		<div class="flex w-full gap-2 p-2 border border-b-0 border-r-0 items-baseline justify-between">
 			{@render searchField()}
 			{@render tabTriggers()}
 		</div>
@@ -80,16 +75,15 @@
 {/snippet}
 
 {#snippet dateHeader(date: string)}
-	<div class="flex-col w-fit border-b p-4 flex justify-between text-xl italic">
+	<div class="flex-col w-1/2 border-b p-4 flex justify-between text-xl italic">
 		<span>{relativeDateString(date)}</span>
 		<span>{toLocaleDateString(date)}</span>
 	</div>
 {/snippet}
 
 {#snippet dateContent(date: DateData)}
-	<div class="flex flex-col items-center">
+	<div class="flex flex-col items-center py-8">
 		{@render dateHeader(date.date)}
-
 		{#each date.events as event}
 			<Separator orientation="vertical" class="min-h-16 max-h-16" />
 			<EventCard {event} />
@@ -108,7 +102,8 @@
 	</Tabs.Content>
 {/snippet}
 
-<Tabs.Root value="upcoming" class="flex w-full flex-col items-center justify-baseline-last">
+<Tabs.Root value="upcoming" class="flex gap-4 w-full flex-col items-center justify-baseline-last">
+	<Label class="w-full text-4xl pt-12">Events</Label>
 	{@render tabs()}
 	{@render dateTab('past', past)}
 	{@render dateTab('upcoming', upcoming)}
