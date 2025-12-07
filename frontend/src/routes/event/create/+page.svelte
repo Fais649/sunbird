@@ -5,7 +5,7 @@
 	let { data }: { data: PageData } = $props();
 </script>
 
-<div class="flex flex-col gap-4 w-full">
-	<Label class="w-full text-4xl pt-12">New Event</Label>
+<div class="flex flex-col w-full">
+	<Label class="w-full text-4xl pt-12 pb-4 border-b">New Event</Label>
 	<Form {data} />
 </div>

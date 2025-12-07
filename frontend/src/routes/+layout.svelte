@@ -33,16 +33,18 @@
 	<div bind:this={titlebar} class="flex flex-col mt-4 h-24 py-4 gap-2 items-center justify-center">
 		<div class="flex w-full items-center justify-between">
 			<div class="flex flex-col w-full h-full items-baseline justify-center">
-				<div class="flex w-full items-center gap-2 text-4xl">
-					<a href="/" class="rounded-full">
-						<img class="aspect-square w-12 grayscale" src={logo} alt="lol" />
+				<div class="flex w-full items-center gap-2 text-xl">
+					<a href="/" class="w-10 aspect-square bg-foreground grayscale flex h-full">
+						<img class="h-full object-cover" src={logo} alt="lol" />
 					</a>
-					<div class="flex flex-col items-start border-l pl-2">
+					<div class="flex flex-col items-start">
 						<a href="/"> Sunbird Post </a>
 
-						<div class="flex justify-start w-full gap-2 h-4 text-sm">
+						<div
+							class="flex flex-col lg:flex-row justify-start w-full lg:pt-0 lg:gap-2 lg:h-4 text-xs"
+						>
 							<a href="/about">About Us</a>
-							<Separator orientation="vertical" class="h-4 w-1" />
+							<Separator orientation="vertical" class="hidden lg:visible h-4 w-1" />
 							<a href="/partners">Our Partners</a>
 						</div>
 					</div>
@@ -50,7 +52,7 @@
 			</div>
 
 			<div class="flex justify-center items-center">
-				<Button href="/event/create" size="icon-lg" class="p-0 bg-primary"><PlusIcon /></Button>
+				<Button href="/event/create" class="size-10 p-0 bg-primary"><PlusIcon /></Button>
 			</div>
 		</div>
 	</div>
@@ -64,7 +66,7 @@
 	{#if showScrollTop}
 		<div class="fixed bottom-4 right-4 z-100">
 			<Button size="icon-lg" class="z-100" onclick={scrollToTop}
-				><ChevronUpIcon strokeWidth="2" /></Button
+				><ChevronUpIcon strokeWidth="2" size={24} /></Button
 			>
 		</div>
 	{/if}

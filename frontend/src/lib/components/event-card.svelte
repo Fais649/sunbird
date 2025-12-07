@@ -48,7 +48,7 @@
 	</Carousel.Root>
 {/snippet}
 
-<div class=" relative flex w-full gap-0 p-0">
+<div class=" relative flex w-full gap-0 p-0 z-10">
 	<div
 		class="absolute border -left-2 -top-2 h-[calc(100%+var(--spacing)*4)] w-[calc(100%+var(--spacing)*4)] pointer-events-none z-0"
 	>
