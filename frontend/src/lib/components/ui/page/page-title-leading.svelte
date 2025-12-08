@@ -2,6 +2,6 @@
 	let { children } = $props();
 </script>
 
-<div class="text-3xl flex items-baseline">
+<div class="text-xl flex items-baseline">
 	{@render children()}
 </div>

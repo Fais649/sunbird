@@ -71,14 +71,14 @@
 {/snippet}
 
 {#snippet dateHeader(date: string)}
-	<div class="flex-col w-fit pb-4 px-0 flex items-start text-xl italic">
-		<span class="border-l pl-2 pt-2">{relativeDateString(date)}</span>
-		<span class="border-l pl-2 pb-2">{toLocaleDateString(date)}</span>
+	<div class="flex-col w-1/2 my-8 border-b flex items-start text-xl italic">
+		<span class="pt-2">{relativeDateString(date)}</span>
+		<span class="pb-2">{toLocaleDateString(date)}</span>
 	</div>
 {/snippet}
 
 {#snippet dateContent(date: DateData)}
-	<div class="flex flex-col items-start font-thin">
+	<div class="flex flex-col items-start max-w-2xl font-thin">
 		{@render dateHeader(date.date)}
 		{#each date.events as event}
 			<EventCard {event} />
@@ -87,7 +87,7 @@
 {/snippet}
 
 {#snippet dateTab(key: string, data: DateData[])}
-	<Tabs.Content value={key} class="w-full py-0   border-t">
+	<Tabs.Content value={key} class="w-full py-0">
 		{#if data.length == 0}
 			{@render noEventsBox(key)}
 		{/if}

@@ -32,13 +32,13 @@
 {#snippet imageCarousel(imageUrls: string[])}
 	<Carousel.Root
 		class={horizontalLayout
-			? 'w-1/2 h-full aspect-square overflow-hidden'
+			? 'w-1/2 h-full  overflow-hidden flex'
 			: 'w-full h-full aspect-3/2 overflow-hidden'}
 	>
-		<Carousel.Content class="gap-0">
+		<Carousel.Content class="gap-0 h-full flex">
 			{#each imageUrls as imageUrl}
-				<Carousel.Item>
-					<img src={imageUrl} alt="banner" class="object-cover w-full h-full" />
+				<Carousel.Item class="h-full flex">
+					<img src={imageUrl} alt="banner" class="object-cover flex w-full h-full" />
 				</Carousel.Item>
 			{/each}
 		</Carousel.Content>

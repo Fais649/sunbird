@@ -15,7 +15,7 @@
 
 <div
 	bind:this={ref}
-	class="flex border-foreground justify-start items-end gap-1 w-full lg:max-w-4xl mb-4"
+	class="flex border-foreground justify-start items-end gap-1 w-full max-w-2xl mb-4"
 >
 	<div class="flex h-8 items-end w-full gap-2 text-3xl">
 		<a href="/" class="rounded-full aspect-square bg-foreground grayscale h-8">

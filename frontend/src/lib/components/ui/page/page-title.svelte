@@ -4,6 +4,6 @@
 	let { children } = $props();
 </script>
 
-<Label class="w-full text-3xl flex justify-between pt-4 h-12">
+<Label class="border-b border-t w-full text-xl flex justify-between my-4 h-12">
 	{@render children()}
 </Label>
