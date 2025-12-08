@@ -4,6 +4,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
+	import * as Page from '$lib/components/ui/page/index.js';
 	import type { DateData } from '$lib/server/collections.js';
 	import { onMount } from 'svelte';
 	import Pagination from './pagination.svelte';
@@ -44,31 +45,26 @@
 </script>
 
 {#snippet searchField()}
-	<div class="flex justify-center h-fit items-center">
-		<div class="rounded-full aspect-square h-full p-2 w-full border">
-			<Search strokeWidth="1" class="size-4" />
-		</div>
-	</div>
+	<Button variant="outline" size="icon-sm">
+		<Search strokeWidth="1" class="size-4" />
+	</Button>
 {/snippet}
 
 {#snippet tabTriggers()}
 	<Tabs.List class="flex  h-full w-full items-center">
 		<Tabs.Trigger value="past" class="w-full px-4 border-r  flex h-fit">Past</Tabs.Trigger>
-
 		<Tabs.Trigger value="upcoming" class="w-full px-4  flex h-fit">Upcoming</Tabs.Trigger>
 	</Tabs.List>
 {/snippet}
 
 {#snippet tabs()}
-	<div class="flex w-fit h-full items-center justify-end">
-		{@render tabTriggers()}
-		{@render searchField()}
-	</div>
+	{@render tabTriggers()}
+	{@render searchField()}
 {/snippet}
 
 {#snippet noEventsBox(tab: string)}
 	<div
-		class="text-muted-foreground italic p-16 border flex w-full justify-center shadow-[-4px_4px_0_0_rgba(0,0,0,0.25)] items-center aspect-square"
+		class="text-foreground italic p-16 border flex w-full justify-center items-center aspect-square"
 	>
 		No {tab} events
 	</div>
@@ -101,12 +97,17 @@
 	</Tabs.Content>
 {/snippet}
 
-<Tabs.Root value="upcoming" class="flex  w-full flex-col items-center justify-baseline-last">
-	<Label class="w-full text-3xl flex justify-between  pt-4">
-		<div>Events</div>
-		{@render tabs()}
-	</Label>
-
-	{@render dateTab('past', past)}
-	{@render dateTab('upcoming', upcoming)}
+<Tabs.Root value="upcoming">
+	<Page.Root>
+		<Page.Title>
+			<Page.TitleLeading>Events</Page.TitleLeading>
+			<Page.TitleTrailing>
+				{@render tabs()}
+			</Page.TitleTrailing>
+		</Page.Title>
+		<Page.Content>
+			{@render dateTab('past', past)}
+			{@render dateTab('upcoming', upcoming)}
+		</Page.Content>
+	</Page.Root>
 </Tabs.Root>

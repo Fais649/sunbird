@@ -33,45 +33,49 @@
 			activeImage = $files[0];
 		}
 	});
+	let innerWidth = $state(null);
+	let horizontalLayout = $derived((innerWidth ?? 0) > 768);
 </script>
 
+<svelte:window bind:innerWidth />
+
 {#snippet imageCarousel(imageUrls: FileList)}
-	<div class="flex items-center flex-col w-full border-none gap-2">
-		<div class="flex w-full aspect-square border p-1">
-			{#if activeImage}
+	<div class="flex flex-col h-full w-full gap-1 p-1">
+		{#if activeImage}
+			<div
+				class={horizontalLayout
+					? 'w-full h-5/6 aspect-square overflow-hidden'
+					: 'w-full h-full aspect-3/2 overflow-hidden'}
+			>
 				<img
 					src={URL.createObjectURL(activeImage)}
 					alt="banner"
-					class="object-cover aspect-square h-full"
+					class="object-cover w-full h-full"
 				/>
-			{/if}
-		</div>
+			</div>
+		{/if}
 
-		<div class="flex items-start w-full">
+		<div class="flex overflow-x-auto h-1/6 gap-1">
 			{#each imageUrls as imageUrl, i}
 				<div
-					class="flex flex-col w-24 {imageUrl.name == activeImage?.name
+					class="flex flex-col w-16 aspect-square p-1 {imageUrl.name == activeImage?.name
 						? 'border'
 						: 'border-foreground/50'}"
 				>
 					<Button
 						variant="ghost"
-						class="object-cover border border-transparent hover:border-foreground hover:bg-background h-full p-1 aspect-square"
+						class="overflow-hidden border h-2/3 border-transparent hover:border-foreground hover:bg-background w-full p-0"
 						onclick={() => {
 							activeImage = imageUrl;
 						}}
 					>
-						<img
-							src={URL.createObjectURL(imageUrl)}
-							alt="banner"
-							class="object-cover aspect-square h-full"
-						/>
+						<img src={URL.createObjectURL(imageUrl)} alt="banner" class="object-cover w-full" />
 					</Button>
 
 					<Button
 						variant="ghost"
 						size="sm"
-						class="flex hover:text-primary-foreground hover:bg-primary place-items-center justify-between  p-1"
+						class="h-1/3"
 						onclick={() => {
 							files.set([...Array.from($files).slice(0, i), ...Array.from($files).slice(i + 1)]);
 						}}
@@ -87,26 +91,24 @@
 	</div>
 {/snippet}
 
-<Form.Field {form} {name} class="flex flex-col">
+<Form.Field {form} {name} class="flex flex-col w-full h-full p-1">
 	<Form.Control>
-		<div class="flex flex-col gap-4">
-			{#if $files.length == 0}
-				<FileDropZone
-					{title}
-					{description}
-					{onUpload}
-					{onFileRejected}
-					maxFileSize={10 * MEGABYTE}
-					accept="image/*"
-					maxFiles={8}
-					fileCount={$files.length ?? 0}
-				/>
-			{:else}
-				{@render imageCarousel($files)}
-			{/if}
+		{#if $files.length == 0}
+			<FileDropZone
+				{title}
+				{description}
+				{onUpload}
+				{onFileRejected}
+				maxFileSize={10 * MEGABYTE}
+				accept="image/*"
+				maxFiles={8}
+				fileCount={$files.length ?? 0}
+			/>
+		{:else}
+			{@render imageCarousel($files)}
+		{/if}
 
-			<Form.FieldErrors />
-			<input {name} type="file" bind:files={$files} class="hidden" />
-		</div>
+		<Form.FieldErrors />
+		<input {name} type="file" bind:files={$files} class="hidden" />
 	</Form.Control>
 </Form.Field>

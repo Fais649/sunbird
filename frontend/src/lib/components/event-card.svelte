@@ -10,6 +10,7 @@
 	import ButtonAddToCalendar from './button-add-to-calendar.svelte';
 	import Separator from './ui/separator/separator.svelte';
 	import { ScrollArea } from './ui/scroll-area/index.ts';
+	import Button from './ui/button/button.svelte';
 
 	interface Props {
 		event: EventData;
@@ -52,7 +53,7 @@
 {/snippet}
 
 <svelte:window bind:innerWidth />
-<div class=" relative flex w-full p-0 z-10">
+<div class="flex w-full p-0 z-10">
 	<div
 		class="flex mb-4 border {horizontalLayout
 			? 'flex-row'
@@ -67,12 +68,9 @@
 					<a href="/event/view-{event.id}">
 						<div class="hover:underline decoration-1 text-3xl">{event.title}</div>
 					</a>
-					<a
-						href="/event/edit-{event.id}"
-						class="border rounded-full aspect-square p-2 h-full flex items-center justify-center"
-					>
+					<Button variant="outline" size="icon-sm" href="/event/edit-{event.id}">
 						<EditIcon strokeWidth="1" class="size-4" />
-					</a>
+					</Button>
 				</div>
 
 				<div class="flex flex-col">

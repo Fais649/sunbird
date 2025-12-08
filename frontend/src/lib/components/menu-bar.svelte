@@ -26,16 +26,12 @@
 
 	<DropdownMenu.Root>
 		<div class="gap-2 items-start flex w-fit">
-			<a
-				href="/event/create"
-				class="rounded-full size-8 aspect-square place-items-center bg-primary items-center justify-center flex"
-				><PlusIcon strokeWidth="1" class="stroke-background" /></a
-			>
-			<DropdownMenu.Trigger
-				class="size-8 rounded-full aspect-square place-items-center bg-transparent border border-foreground p-1 items-center justify-center flex"
-			>
-				<MenuIcon strokeWidth="1" class="stroke-foreground" /></DropdownMenu.Trigger
-			>
+			<Button size="icon-sm" href="/event/create">
+				<PlusIcon strokeWidth="1" />
+			</Button>
+			<DropdownMenu.Trigger>
+				<MenuIcon strokeWidth="1" />
+			</DropdownMenu.Trigger>
 		</div>
 		<DropdownMenu.Content>
 			<DropdownMenu.Group>

@@ -124,14 +124,14 @@
 	for={id}
 	aria-disabled={!canUploadFiles}
 	class={cn(
-		'hover:bg-muted  aspect-square border-border  flex  w-full place-items-center justify-center rounded-lg border  p-6 transition-all hover:cursor-pointer aria-disabled:opacity-50 aria-disabled:hover:cursor-not-allowed',
+		'hover:bg-muted h-full   border-border  flex  w-full place-items-center justify-center rounded-lg border  p-6 transition-all hover:cursor-pointer aria-disabled:opacity-50 aria-disabled:hover:cursor-not-allowed',
 		className
 	)}
 >
 	{#if children}
 		{@render children()}
 	{:else}
-		<div class="flex aspect- flex-col place-items-center justify-center gap-4">
+		<div class="flex flex-col place-items-center h-full justify-center gap-4">
 			<span class="text-foreground italic text-xl">
 				{title}
 			</span>

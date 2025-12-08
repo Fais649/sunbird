@@ -83,7 +83,6 @@
 						name="location"
 						type="text"
 						placeholder={title}
-						class="border-l border-t aria-invalid:border-t-destructive aria-invalid:border-l-destructive"
 						bind:value={query}
 						oninput={onInput}
 					/>
@@ -119,14 +118,14 @@
 		</Form.Control>
 		<Form.Description>
 			{#if results.length}
-				<Item.Root variant="outline" class="border-r-0 border-t-0 border-b-0 pr-0">
+				<Item.Root variant="outline">
 					<Item.Group class="gap-4 p-4">
 						{#each results as r}
 							<Item.Root class="w-full">
 								{#snippet child()}
 									<Button
 										variant="outline"
-										class="whitespace-normal text-start p-4 h-full border-l  border-r-0 border-t-0 border-b-0 w-full truncate"
+										class="whitespace-normal text-start p-4 h-full w-full truncate"
 										onclick={() => choose(r)}
 									>
 										<Item.Content>

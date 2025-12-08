@@ -40,9 +40,9 @@
 		bind:this={ref}
 		data-slot={dataSlot}
 		class={cn(
-			'bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground ring-offset-background placeholder:italic placeholder:text-foreground/50  flex h-9 w-full min-w-0  border-t border-l px-3 py-3 text-base outline-none transition-[color,box-shadow] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+			'bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground ring-offset-background placeholder:italic placeholder:text-foreground/50  flex h-9 w-full min-w-0   px-3 py-3 text-base outline-none transition-[color,box-shadow] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
 			'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
-			'aria-invalid:ring-destructive/50 aria-invalid:italic aria-invalid:text-destructive dark:aria-invalid:ring-destructive/40 aria-invalid:border-t-destructive aria-invalid:border-l-destructive',
+			'aria-invalid:ring-destructive/50 aria-invalid:italic aria-invalid:text-destructive dark:aria-invalid:ring-destructive/40',
 			className
 		)}
 		{type}
