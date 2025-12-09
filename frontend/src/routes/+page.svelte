@@ -97,8 +97,8 @@
 	</Tabs.Content>
 {/snippet}
 
-<Tabs.Root value="upcoming">
-	<Page.Root>
+<Page.Root>
+	<Tabs.Root class="flex w-full" value="upcoming">
 		<Page.Title>
 			<Page.TitleLeading>Events</Page.TitleLeading>
 			<Page.TitleTrailing>
@@ -109,5 +109,5 @@
 			{@render dateTab('past', past)}
 			{@render dateTab('upcoming', upcoming)}
 		</Page.Content>
-	</Page.Root>
-</Tabs.Root>
+	</Tabs.Root>
+</Page.Root>
