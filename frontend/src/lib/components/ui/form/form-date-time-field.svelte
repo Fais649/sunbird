@@ -16,7 +16,7 @@
 	import Label from '$lib/components/ui/label/label.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 
-	let { form, name, title, description, defaultTime = '10:30:00' } = $props();
+	let { form, name, title, description, defaultTime = '10:30:00', showTitle = true } = $props();
 	const { form: formData } = form;
 
 	const df = new DateFormatter('en-US', { dateStyle: 'long' });
@@ -45,32 +45,35 @@
 	});
 </script>
 
-<Form.Field {form} {name} class="flex flex-col @container">
+<Form.Field {form} {name} class="flex  ">
 	<Form.Control>
 		{#snippet children({ props })}
-			<Form.Label>{title}</Form.Label>
+			{#if showTitle}
+				<div class="flex justify-between w-full items-baseline mb-2">
+					<Form.Label>{title}</Form.Label>
+					<Form.Description>{description}</Form.Description>
+				</div>
+			{/if}
 
-			<div class="grid grid-cols-2 gap-2">
-				<div class="columns-1">
+			<div class="flex flex-row h-full items-center w-full gap-2">
+				<div class="flex w-full">
 					<Popover.Root>
 						<Popover.Trigger
 							{...props}
 							class={cn(
 								buttonVariants({ variant: 'outline' }),
-								'w-full justify-start ps-4 text-start font-normal',
-								!dateValue && 'text-muted-foreground'
+								'flex w-full justify-start border-0  text-start '
 							)}
 						>
+							<CalendarIcon strokeWidth="2" class="size-4" />
 							{dateValue ? df.format(dateValue.toDate(getLocalTimeZone())) : 'Pick a date'}
-							<CalendarIcon class="ms-auto size-4 opacity-50" />
 						</Popover.Trigger>
 						<Popover.Content class="w-full p-0" side="top">
 							<Calendar
 								type="single"
 								value={dateValue}
 								captionLayout="dropdown"
-								minValue={new CalendarDate(1900, 1, 1)}
-								maxValue={today(getLocalTimeZone())}
+								minValue={today(getLocalTimeZone())}
 								calendarLabel={title}
 								onValueChange={(v) => {
 									dateValue = v;
@@ -80,15 +83,15 @@
 					</Popover.Root>
 				</div>
 
-				<div>
-					<div class="flex flex-col gap-3">
+				<div class="flex w-full">
+					<div class="flex flex-col w-full">
 						<Label for="{name}-time" class="hidden px-1">Time</Label>
 						<Input
 							type="time"
 							id="{name}-time"
 							step="1"
 							bind:value={timeValue}
-							class="bg-background appearance-none 
+							class="bg-background appearance-none w-full
            [&::-webkit-calendar-picker-indicator]:hidden 
            [&::-webkit-calendar-picker-indicator]:appearance-none"
 						/>
@@ -96,7 +99,6 @@
 				</div>
 			</div>
 			<Form.FieldErrors />
-			<Form.Description>{description}</Form.Description>
 
 			<input hidden name={props.name} value={$formData[name]} />
 		{/snippet}

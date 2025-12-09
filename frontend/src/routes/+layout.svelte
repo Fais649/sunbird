@@ -1,33 +1,47 @@
 <script lang="ts">
 	import './layout.css';
-	import favicon from '$lib/assets/favicon.svg';
 	import logo from '$lib/assets/logo.svg';
+	import ChevronUpIcon from '@lucide/svelte/icons/chevron-up';
+	import Button from '$lib/components/ui/button/button.svelte';
 	import MenuBar from '$lib/components/menu-bar.svelte';
-	import ScrollArea from '$lib/components/ui/scroll-area/scroll-area.svelte';
+
+	let showScrollTop = $state(false);
+	let titlebar: HTMLElement | undefined = $state();
 
 	let { children } = $props();
+
+	$effect(() => {
+		const observer = new IntersectionObserver(
+			([entry]) => (showScrollTop = !entry.isIntersecting),
+			{ threshold: 0 }
+		);
+		if (titlebar) observer.observe(titlebar);
+		return () => observer.disconnect();
+	});
+
+	function scrollToTop() {
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
 </script>
 
 <svelte:head>
 	<link rel="icon" href={logo} />
 </svelte:head>
 
-<div class="flex p-8 w-full items-center justify-between">
-	<a href="/">
-		<img class="h-16 w-16" src={logo} alt="lol" />
-	</a>
-	<div class="flex gap-8">
-		<a href="/about">About Us</a>
-		<a href="/partners">Our Partners</a>
-	</div>
-</div>
+<div class="min-h-screen bg-background flex flex-col w-full items-center p-4">
+	<MenuBar bind:ref={titlebar} />
 
-<div class="w-full flex flex-col items-center py-8">
-	<div class="flex w-full max-w-xl justify-center">
-		{@render children()}
+	<div class="w-full h-full flex flex-col flex-1 max-w-4xl items-center z-10">
+		<div class="flex w-full h-full justify-center mb-32">
+			{@render children()}
+		</div>
 	</div>
-</div>
 
-<div class="h-full w-full flex items-center py-16 justify-center gap-8">
-	<span>Sunbird GmbH</span>
+	{#if showScrollTop}
+		<div class="fixed bottom-4 right-4 z-100">
+			<Button size="icon-sm" variant="outline" onclick={scrollToTop}
+				><ChevronUpIcon strokeWidth="2" size={24} /></Button
+			>
+		</div>
+	{/if}
 </div>

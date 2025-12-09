@@ -60,7 +60,7 @@
 							{...props}
 							class={cn(
 								buttonVariants({ variant: 'outline' }),
-								'w-[280px] justify-start ps-4 text-start font-normal',
+								'w-[280px] justify-start ps-4 text-start',
 								!dateValue && 'text-muted-foreground'
 							)}
 						>

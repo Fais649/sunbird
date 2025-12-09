@@ -56,7 +56,6 @@ END:VCALENDAR`.trim();
 	}
 </script>
 
-<Button class="flex w-fit h-full text-lg" variant="outline" onclick={() => shareEvent(event)}>
-	<ShareIcon />
-	Share
+<Button size="icon-sm" variant="secondary" onclick={() => shareEvent(event)}>
+	<ShareIcon strokeWidth="1" />
 </Button>

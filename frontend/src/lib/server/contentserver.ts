@@ -1,7 +1,9 @@
 import { env } from "$env/dynamic/private"
 import { env as publicEnv } from "$env/dynamic/public"
 import PocketBase, { ClientResponseError } from "pocketbase"
-import { EVENT_DATA_FIELDS, type CreateEventData, type EventData } from "./collections"
+import { DATE_DATA_FIELDS, EVENT_DATA_FIELDS, type CreateEventData, type DateData, type EventData } from "./collections"
+import { form } from "$app/server"
+import { format } from "path"
 
 const authUsername = env.INTERNAL_API_AUTH_USERNAME ?? ''
 const authPassword = env.INTERNAL_API_AUTH_PASSWORD ?? ''
@@ -12,6 +14,7 @@ const internalURL = env.INTERNAL_API_URL ?? ''
 const client = new PocketBase(env.INTERNAL_API_URL ?? '')
 const userData = client.collection('_superusers')
 const eventData = client.collection('events')
+const dateData = client.collection('dates')
 
 
 export async function getEvent(id: string, server: boolean = false, locationQuery: boolean = false): Promise<EventData> {
@@ -21,19 +24,27 @@ export async function getEvent(id: string, server: boolean = false, locationQuer
 }
 
 
-export async function getEventList(page: number, perPage: number, locationQuery: boolean = false) {
+export async function getEventList(page: number, perPage: number) {
 	await authenticate()
-	let events = await eventData.getList<EventData>(page, perPage, { fields: EVENT_DATA_FIELDS })
-	let items = []
-	for (const event of events.items) {
-		items.push(await hydrateEvent(event))
+	let res = await dateData.getFullList<DateData>({ fields: DATE_DATA_FIELDS })
+
+	let dates = []
+	for (const date of res) {
+		let events = []
+		for (const event of date.events) {
+			events.push(await hydrateEvent(event, false))
+		}
+
+		date.events = events
+		dates.push(date)
 	}
-	events.items = items
-	return events
+
+	console.log(dates)
+	return dates
 }
 
 async function hydrateEvent(event: EventData, server: boolean = false, locationQuery: boolean = false) {
-	let imageUrls = event.banners.map((filename) => (server ? buildInternalFileURL('events', event.id, filename, 'thumb=540x540') : buildPublicFileURL('events', event.id, filename, 'thumb=540x540')))
+	let imageUrls = event.banners.map((filename) => (server ? buildInternalFileURL('events', event.id, filename, 'thumb=720x720f') : buildPublicFileURL('events', event.id, filename, 'thumb=540x540')))
 	event.banners = imageUrls
 
 	event.locationUrl = buildPublicLocationUrl(event.location)
@@ -42,7 +53,7 @@ async function hydrateEvent(event: EventData, server: boolean = false, locationQ
 			'https://nominatim.openstreetmap.org/reverse?' +
 			new URLSearchParams({
 				lat: String(event.location.lat),
-				lon: String(event.location.lat),
+				lon: String(event.location.lon),
 				format: 'json',
 				limit: '1',
 				'accept-language': 'en'
@@ -125,11 +136,15 @@ async function authenticate() {
 	}
 }
 
-function buildPublicFileURL(collectionName: string, id: string, filename: string, properties?: string): string {
+export function buildPublicFileURL(collectionName: string, id: string, filename: string, properties?: string): string {
 	return publicURL + '/api/files/' + collectionName + '/' + id + '/' + filename + '?' + properties
 }
 
-function buildInternalFileURL(collectionName: string, id: string, filename: string, properties?: string): string {
+export function buildInternalFileURL(collectionName: string, id: string, filename: string, properties?: string): string {
+	return '/api/files/' + collectionName + '-' + id + '-' + filename + '-' + properties
+}
+
+export function buildInternalAPIUrl(collectionName: string, id: string, filename: string, properties?: string): string {
 	return internalURL + '/api/files/' + collectionName + '/' + id + '/' + filename + '?' + properties
 }
 

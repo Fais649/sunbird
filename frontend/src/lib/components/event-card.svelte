@@ -1,16 +1,16 @@
 <script lang="ts">
-	import ShareIcon from '@lucide/svelte/icons/share';
 	import LocationIcon from '@lucide/svelte/icons/map-pin';
 	import CalendarIcon from '@lucide/svelte/icons/calendar';
-	import ClockStartIcon from '@lucide/svelte/icons/clock-1';
 	import ClockEndIcon from '@lucide/svelte/icons/clock-7';
+	import EditIcon from '@lucide/svelte/icons/pencil';
 	import Item from '$lib/components/ui/item/item.svelte';
 	import type { EventData } from '$lib/server/collections';
 	import * as Carousel from '$lib/components/ui/carousel/index.js';
-	import * as Card from '$lib/components/ui/card/index.js';
-	import Button from './ui/button/button.svelte';
 	import ButtonShare from './button-share.svelte';
 	import ButtonAddToCalendar from './button-add-to-calendar.svelte';
+	import Separator from './ui/separator/separator.svelte';
+	import { ScrollArea } from './ui/scroll-area/index.ts';
+	import Button from './ui/button/button.svelte';
 
 	interface Props {
 		event: EventData;
@@ -19,150 +19,101 @@
 	let { event }: Props = $props();
 
 	function formatDate(date: string) {
-		return new Date(date).toLocaleString('de-DE', { dateStyle: 'short', timeStyle: 'short' });
+		return new Date(date).toLocaleString('de-DE', { dateStyle: 'short' });
 	}
 
-	function generateICS(event: EventData) {
-		const ics = `
-BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//YourApp//EN
-CALSCALE:GREGORIAN
-BEGIN:VEVENT
-UID:${event.id}
-DTSTAMP:${new Date(event.created).toISOString().replace(/[-:]/g, '').split('.')[0]}Z
-DTSTART:${new Date(event.start).toISOString().replace(/[-:]/g, '').split('.')[0]}Z
-DTEND:${new Date(event.end).toISOString().replace(/[-:]/g, '').split('.')[0]}Z
-SUMMARY:${event.title}
-DESCRIPTION:${event.description.replace(/\n/g, '\\n')}
-LOCATION:${event.locationUrl ?? ''}
-END:VEVENT
-END:VCALENDAR`.trim();
-
-		const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-		return URL.createObjectURL(blob);
+	function formatTime(date: string) {
+		return new Date(date).toLocaleString('de-DE', { timeStyle: 'short' });
 	}
-
-	function isMobile() {
-		return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-	}
-
-	function addToCalendar(event: EventData) {
-		const url = generateICS(event);
-		const fileName = `${event.title.replace(/\s+/g, '_')}.ics`;
-
-		if (isMobile()) {
-			try {
-				window.location.href = url;
-			} catch {
-				window.open(url, '_blank');
-			}
-		} else {
-			const link = document.createElement('a');
-			link.href = url;
-			link.download = fileName;
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-			URL.revokeObjectURL(url);
-		}
-	}
-	async function shareEvent(event: EventData) {
-		const icsUrl = generateICS(event);
-
-		const response = await fetch(icsUrl);
-		const blob = await response.blob();
-		const file = new File([blob], `${event.title.replace(/\s+/g, '_')}.ics`, {
-			type: 'text/calendar'
-		});
-
-		if (navigator.share) {
-			try {
-				await navigator.share({
-					title: event.title,
-					text: event.description,
-					files: [file]
-				});
-			} catch (err) {
-				console.warn('Share canceled or failed', err);
-			}
-		} else {
-			const link = document.createElement('a');
-			link.href = icsUrl;
-			link.download = file.name;
-			document.body.appendChild(link);
-			link.click();
-			document.body.removeChild(link);
-		}
-	}
+	let innerWidth = $state(null);
+	let horizontalLayout = $derived((innerWidth ?? 0) > 768);
 </script>
 
 {#snippet imageCarousel(imageUrls: string[])}
-	<Carousel.Root class=" flex items-center flex-col w-full border-none">
-		<Carousel.Content class="gap-0">
+	<Carousel.Root
+		class={horizontalLayout
+			? 'w-1/2 h-full  overflow-hidden flex'
+			: 'w-full h-full aspect-3/2 overflow-hidden'}
+	>
+		<Carousel.Content class="gap-0 h-full flex">
 			{#each imageUrls as imageUrl}
-				<Carousel.Item>
-					<img src={imageUrl} alt="banner" class="object-cover aspect-square h-full rounded" />
+				<Carousel.Item class="h-full flex">
+					<img src={imageUrl} alt="banner" class="object-cover flex w-full h-full" />
 				</Carousel.Item>
 			{/each}
 		</Carousel.Content>
 
-		<div class="gap-8 flex">
-			<Carousel.Previous class="shadow-black shadow-lg" />
-			<Carousel.Next class="shadow-black shadow-lg" />
-		</div>
+		{#if imageUrls.entries.length > 0}
+			<div class="gap-8 flex">
+				<Carousel.Previous class="shadow-black shadow-lg" />
+				<Carousel.Next class="shadow-black shadow-lg" />
+			</div>
+		{/if}
 	</Carousel.Root>
 {/snippet}
 
-<div class="flex w-full max-w-xl flex-col">
-	<Card.Root class="shadow-black w-full shadow-xl">
-		<Card.Header>
+<svelte:window bind:innerWidth />
+<div class="flex w-full p-0 z-10">
+	<div
+		class="flex mb-4 border {horizontalLayout
+			? 'flex-row'
+			: 'flex-col'} bg-transparent w-full p-0 z-10"
+	>
+		{#if !horizontalLayout}
 			{@render imageCarousel(event.banners)}
-		</Card.Header>
-		<Card.Content>
-			<a href="/event/{event.id}">
-				<Card.Title class="text-4xl px-2">{event.title}</Card.Title>
-			</a>
-
-			<a href="/event/edit-{event.id}"> edit </a>
-			<Card.Description class="gap-4 flex flex-col text-xl">
-				<div class="px-2">
-					{@html event.description}
-				</div>
-
-				<div>
-					<Button
-						variant="link"
-						href={event.locationUrl}
-						class="text-xl w-full"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<LocationIcon />
-						<span class="truncate">{event.locationUrl ?? 'nope'}</span>
+		{/if}
+		<div class="flex flex-col {horizontalLayout ? 'w-1/2  py-4' : 'w-full py-2'} h-full px-4">
+			<div class="flex flex-col h-1/2">
+				<div class="flex items-baseline justify-between">
+					<a href="/event/view-{event.id}">
+						<div class="hover:underline decoration-1 text-3xl">{event.title}</div>
+					</a>
+					<Button variant="outline" size="icon-sm" href="/event/edit-{event.id}">
+						<EditIcon strokeWidth="1" class="size-4" />
 					</Button>
 				</div>
 
-				<Item class="px-2 py-0 flex  justify-between gap-2">
-					<span class="flex items-center gap-2">
-						<ClockStartIcon />
-						Start:
-					</span>
-					{formatDate(event.start)}
-				</Item>
+				<div class="flex flex-col">
+					<ScrollArea class="italic h-28  pr-[5%] mr-[5%]" scrollbarYClasses="w-1">
+						<div class="py-4">
+							{@html event.description}
+						</div>
+					</ScrollArea>
+				</div>
+			</div>
 
-				<Item class="px-2 py-0 flex justify-between gap-2">
-					<div class="flex items-center gap-2">
-						<ClockEndIcon />
-						End:
-					</div>
-					{formatDate(event.end)}
-				</Item>
-			</Card.Description>
-		</Card.Content>
-		<Card.Footer class="w-full flex justify-between">
-			<ButtonShare {event} />
-			<ButtonAddToCalendar {event} />
-		</Card.Footer>
-	</Card.Root>
+			<div class="flex flex-col h-1/2 border-t justify-between pt-2">
+				<div class="flex flex-col h-3/4 pt-2 gap-1">
+					<Item class="flex items-center gap-1">
+						<LocationIcon strokeWidth="1" class="shrink-0" />
+						<a
+							href={event.locationUrl}
+							class="truncate hover:underline decoration-1 min-w-0 flex-1"
+						>
+							{event.locationUrl ?? 'nope'}
+						</a>
+					</Item>
+
+					<Item class="flex  justify-start ">
+						<CalendarIcon strokeWidth="1" />
+						{formatDate(event.start)}
+					</Item>
+
+					<Item class="flex justify-start ">
+						<ClockEndIcon strokeWidth="1" />
+						{formatTime(event.start)}
+						->
+						{formatTime(event.end)}
+					</Item>
+				</div>
+				<div class="flex gap-2 pt-2 items-end {horizontalLayout ? '' : 'pb-2'}">
+					<ButtonShare {event} />
+					<ButtonAddToCalendar {event} />
+				</div>
+			</div>
+		</div>
+		{#if horizontalLayout}
+			{@render imageCarousel(event.banners)}
+		{/if}
+	</div>
 </div>

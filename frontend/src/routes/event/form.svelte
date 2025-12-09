@@ -1,13 +1,13 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form/index.js';
-	import Label from '$lib/components/ui/label/label.svelte';
 	import type { EventData } from '$lib/server/collections';
 	import { onMount } from 'svelte';
 	import { formSchema, type FormSchema } from './form-schema';
-	import SuperDebug from 'sveltekit-superforms';
 	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
 
 	import { zod4Client } from 'sveltekit-superforms/adapters';
+	import ScrollArea from '$lib/components/ui/scroll-area/scroll-area.svelte';
+	import * as Card from '$lib/components/ui/layout/index.js';
 
 	let { data }: { data: { form: SuperValidated<Infer<FormSchema>>; event?: EventData } } = $props();
 
@@ -36,56 +36,90 @@
 			formData.set({ ...event, banners: banners });
 		}
 	});
+
+	let innerWidth = $state(null);
+	let horizontalLayout = $derived((innerWidth ?? 0) > 768);
 </script>
 
-<form
-	method="POST"
-	enctype="multipart/form-data"
-	use:enhance
-	class="w-full gap-4 flex flex-col max-w-[95vw]"
->
-	<Label class="text-4xl">Create an event</Label>
-	<div class="border rounded gap-2 flex flex-col w-full p-4 bg-card">
-		{#if data.event}
-			<input type="hidden" name="id" value={data.event.id} />
-		{/if}
-		<Form.ImagesField
-			{form}
-			name="banners"
-			title="Banners"
-			description="Upload some cool images to help your event stand out"
-		/>
+{#snippet imagesField()}
+	<Form.ImagesField
+		{form}
+		name="banners"
+		title="Event Banners"
+		description="Cover photos for your event"
+	/>
+{/snippet}
 
-		<Form.TextField {form} name="title" title="Title" description="The title of your event" />
+{#snippet textFields()}
+	<Form.TextField {form} name="title" title="Title" description="The title of your event" />
 
+	<ScrollArea
+		class="italic h-28 {horizontalLayout ? 'pr-[5%] mr-[5%]' : ''}"
+		scrollbarYClasses="w-1"
+	>
 		<Form.TextField
 			{form}
 			name="description"
 			title="Description"
 			description="Details about the event"
 		/>
+	</ScrollArea>
 
-		<Form.LocationField
-			{form}
-			name="location"
-			title="Location"
-			description="Where does it take place?"
-			defaultQuery={data.event?.location.query ?? ''}
-		/>
+	<Form.LocationField
+		{form}
+		name="location"
+		title="Location"
+		description="Where does it take place?"
+		defaultQuery={data.event?.location.query ?? ''}
+	/>
+	<Form.DateTimeField
+		{form}
+		name="start"
+		title="Timings"
+		showTitle={false}
+		description="When does it take place?"
+	/>
+	<Form.DateTimeField
+		{form}
+		showTitle={false}
+		name="end"
+		title="End Date"
+		description="When does it end?"
+		defaultTime="11:30:00"
+	/>
+{/snippet}
 
-		<Form.DateTimeField {form} name="start" title="Start Date" description="When does it start?" />
-		<Form.DateTimeField
-			{form}
-			name="end"
-			title="End Date"
-			description="When does it end?"
-			defaultTime="11:30:00"
-		/>
+<svelte:window bind:innerWidth />
+
+<form
+	method="POST"
+	enctype="multipart/form-data"
+	use:enhance
+	class="flex w-full flex-col"
+	data-slot="form"
+>
+	<Card.Root>
+		<Card.Leading>
+			{#if horizontalLayout}
+				{@render textFields()}
+			{:else}
+				{@render imagesField()}
+			{/if}
+		</Card.Leading>
+		<Card.Trailing>
+			{#if horizontalLayout}
+				{@render imagesField()}
+			{:else}
+				{@render textFields()}
+			{/if}
+		</Card.Trailing>
+	</Card.Root>
+
+	{#if data.event}
+		<input type="hidden" name="id" value={data.event.id} />
+	{/if}
+
+	<div class="flex justify-center pt-4">
+		<Form.Button size="lg">Submit</Form.Button>
 	</div>
-
-	<div class="flex justify-center">
-		<Form.Button size="lg" class="text-4xl font-bold w-full p-4 h-full">Submit</Form.Button>
-	</div>
-
-	<SuperDebug data={$formData} />
 </form>

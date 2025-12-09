@@ -6,6 +6,6 @@ services:
       target: dev
     volumes:
       - ./frontend:/usr/src/app
+    # command: -c "bun --bun run ./build/index.js"
     command: -c "bun --bun run dev --host"
-
 

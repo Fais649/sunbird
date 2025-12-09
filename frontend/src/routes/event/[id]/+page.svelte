@@ -114,7 +114,7 @@ END:VCALENDAR`.trim();
 			{@render imageCarousel(data.event.banners)}
 		</Card.Header>
 		<Card.Content>
-			<Card.Title class="text-4xl px-2">{data.event.title}</Card.Title>
+			<Card.Title class="text-3xl px-2">{data.event.title}</Card.Title>
 			<Card.Description class="gap-4 flex flex-col text-xl">
 				<div class="px-2">
 					{@html data.event.description}
