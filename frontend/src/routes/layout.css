@@ -35,7 +35,7 @@
   --border:  #6C6A69;
 
   --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.645 0.246 16.439);
+  --ring: #e4e1dd;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -91,7 +91,6 @@
 }
 
 
-
 @utility with-noise {
   background-color: var(--background);
   background-image: url('$lib/assets/noise.svg');
@@ -99,14 +98,41 @@
 	background-blend-mode: hard-light;
 };
 
+@font-face {
+  font-family: 'Noto Serif';
+  src: url('/fonts/Noto_Serif/NotoSerif-VariableFont_wdth,wght.ttf')
+    format('truetype-variations');
+  font-weight: 100 900;
+  font-stretch: 62.5% 100%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  src: url('/fonts/Noto_Sans_Arabic/NotoSansArabic-VariableFont_wdth,wght.ttf')
+    format('truetype-variations');
+  font-weight: 100 900;
+  font-stretch: 62.5% 100%;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
 
   body {
-    font-family: "Noto Serif", serif;
-		font-weight: 200;
-    @apply bg-background text-foreground  h-full flex items-center flex-col;
+    font-family: "Noto Serif", "Noto Sans Arabic", serif;
+    font-weight: 200;
+    @apply bg-background text-foreground h-full flex items-center flex-col;
+  }
+
+  /* Arabic-specific override */
+  [lang='ar'],
+  [dir='rtl'],
+  [lang='ar'] * {
+    font-family: "Noto Sans Arabic", "Noto Serif", serif;
   }
 }

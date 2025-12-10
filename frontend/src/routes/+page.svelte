@@ -1,20 +1,13 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import EventCard from '$lib/components/event-card.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import * as Tabs from '$lib/components/ui/tabs/index.js';
 	import * as Page from '$lib/components/ui/page/index.js';
 	import type { DateData } from '$lib/server/collections.js';
 	import { onMount } from 'svelte';
-	import Pagination from './pagination.svelte';
-	import Select from './select.svelte';
-	import Input from '$lib/components/ui/input/input.svelte';
-	import Label from '$lib/components/ui/label/label.svelte';
 	import Search from '@lucide/svelte/icons/search';
 
 	let { data } = $props();
-	let perPage: string = $state('10');
 	let past: DateData[] = $state([]);
 	let upcoming: DateData[] = $state([]);
 
@@ -59,7 +52,6 @@
 
 {#snippet tabs()}
 	{@render tabTriggers()}
-	{@render searchField()}
 {/snippet}
 
 {#snippet noEventsBox(tab: string)}
@@ -71,7 +63,7 @@
 {/snippet}
 
 {#snippet dateHeader(date: string)}
-	<div class="flex-col w-1/2 my-8 border-b flex items-start text-xl italic">
+	<div class="flex-col w-1/2 border-b flex items-start text-xl italic">
 		<span class="pt-2">{relativeDateString(date)}</span>
 		<span class="pb-2">{toLocaleDateString(date)}</span>
 	</div>

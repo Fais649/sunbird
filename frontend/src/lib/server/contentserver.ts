@@ -24,7 +24,7 @@ export async function getEvent(id: string, server: boolean = false, locationQuer
 }
 
 
-export async function getEventList(page: number, perPage: number) {
+export async function getEventList() {
 	await authenticate()
 	let res = await dateData.getFullList<DateData>({ fields: DATE_DATA_FIELDS })
 
@@ -44,6 +44,7 @@ export async function getEventList(page: number, perPage: number) {
 }
 
 async function hydrateEvent(event: EventData, server: boolean = false, locationQuery: boolean = false) {
+	console.log(event)
 	let imageUrls = event.banners.map((filename) => (server ? buildInternalFileURL('events', event.id, filename, 'thumb=720x720f') : buildPublicFileURL('events', event.id, filename, 'thumb=540x540')))
 	event.banners = imageUrls
 

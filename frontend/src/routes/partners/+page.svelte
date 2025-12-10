@@ -1,5 +1,25 @@
-<div class="grid grid-cols-1 gap-4 max-w-lg">
-	<h1>Our Partners</h1>
-	<h2>Cafe Palestine Colonia</h2>
-	<p>A wonderful project by a wonderful woman</p>
-</div>
+<script lang="ts">
+	import * as Page from '$lib/components/ui/page/index.js';
+</script>
+
+<Page.Root>
+	<Page.Title>
+		<Page.TitleLeading>Our Partners</Page.TitleLeading>
+	</Page.Title>
+	<Page.Content>
+		<div>
+			<h1>Cafe Palestine Cologne</h1>
+			<p>A wonderful project by a wonderful woman</p>
+		</div>
+
+		<div>
+			<h1>March for Freedom</h1>
+			<p>Bringing music to the revolution</p>
+		</div>
+
+		<div>
+			<h1>Gaza Bridgade</h1>
+			<p>Putting boots on the ground</p>
+		</div>
+	</Page.Content>
+</Page.Root>
