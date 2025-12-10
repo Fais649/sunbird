@@ -68,9 +68,6 @@
 					<a href="/event/view-{event.id}">
 						<div class="hover:underline decoration-1 text-3xl">{event.title}</div>
 					</a>
-					<Button variant="outline" size="icon-sm" href="/event/edit-{event.id}">
-						<EditIcon strokeWidth="1" class="size-4" />
-					</Button>
 				</div>
 
 				<div class="flex flex-col">
@@ -90,7 +87,7 @@
 							href={event.locationUrl}
 							class="truncate hover:underline decoration-1 min-w-0 flex-1"
 						>
-							{event.locationUrl ?? 'nope'}
+							{event.address ?? 'No Address'}
 						</a>
 					</Item>
 

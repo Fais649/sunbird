@@ -35,17 +35,12 @@
 		</div>
 		<DropdownMenu.Content>
 			<DropdownMenu.Group>
-				<DropdownMenu.Label>My Account</DropdownMenu.Label>
-				<DropdownMenu.Separator />
-				<DropdownMenu.Item>
-					<a href="/about">About</a>
-				</DropdownMenu.Item>
-				<DropdownMenu.Item>
-					<a href="/partners">Partners</a>
-				</DropdownMenu.Item>
-				<DropdownMenu.Item>
-					<a href="/partners">Contact</a>
-				</DropdownMenu.Item>
+				<a href="/about">
+					<DropdownMenu.Item>About</DropdownMenu.Item>
+				</a>
+				<a href="/partners">
+					<DropdownMenu.Item>Partners</DropdownMenu.Item>
+				</a>
 			</DropdownMenu.Group>
 		</DropdownMenu.Content>
 	</DropdownMenu.Root>

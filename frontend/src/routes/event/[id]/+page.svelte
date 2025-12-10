@@ -129,7 +129,7 @@ END:VCALENDAR`.trim();
 						rel="noopener noreferrer"
 					>
 						<LocationIcon />
-						<span class="truncate">{data.event.locationUrl ?? 'nope'}</span>
+						<span class="truncate">{data.event.locationUrl ?? 'No Address'}</span>
 					</Button>
 				</div>
 

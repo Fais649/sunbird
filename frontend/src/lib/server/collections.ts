@@ -7,7 +7,7 @@ export interface DateData extends Record<string, unknown> {
 	events: EventData[];
 }
 
-export const EVENT_DATA_FIELDS = 'id,title,description,start,end,created,updated,banners,location'
+export const EVENT_DATA_FIELDS = 'id,title,description,start,end,created,updated,banners,location,address'
 export interface EventData extends Record<string, unknown> {
 	id: string,
 	title: string;
@@ -16,9 +16,9 @@ export interface EventData extends Record<string, unknown> {
 	end: string;
 	created: string;
 	updated: string;
+	address: string;
 	location: { lat: number; lon: number, query?: string; };
 	locationUrl: string;
-	locationDisplayName: string;
 	banners: string[];
 }
 
